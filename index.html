@@ -268,42 +268,9 @@ document.querySelector('.load-more-holder').addEventListener('click', function()
   document.getElementById('days-run').innerText = diffDays;
 </script>
         
-        <script>
-var articles = [
-  { title: "茉莉的小站开张啦", url: "index.html" },
-  { title: "关于茉莉的故事", url: "about.html" },
-  { title: "技术分享：如何搭建个人博客", url: "blog-tech.html" },
-  { title: "日常生活记录", url: "life.html" }
-];
-
-document.getElementById('search-input').addEventListener('input', function() {
-  var keyword = this.value.trim();
-  var resultDiv = document.getElementById('search-results');
-  resultDiv.innerHTML = '';
-
-  if (!keyword) return;
-
-  var regex = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-  var matched = articles.filter(function(article) {
-    return article.title.toLowerCase().includes(keyword.toLowerCase());
-  });
-
-  if (matched.length === 0) {
-    resultDiv.innerHTML = '<p>没有找到相关标题。</p>';
-    return;
-  }
-
-  var html = '<ul>';
-  matched.forEach(function(article) {
-    var title = article.title.replace(regex, '<span style="background:yellow;">$1</span>');
-    html += `<li><a href="${article.url}">${title}</a></li>`;
-  });
-  html += '</ul>';
-  resultDiv.innerHTML = html;
-});
-</script>
     </body>
 </html>
+
 
 
 
