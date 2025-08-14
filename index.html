@@ -44,9 +44,9 @@
                     </label>
                 </div>
                 <div class="site-info-holder">
-                    <h1 class="site-title">Suppablog</h1>
+                    <h1 class="site-title">茉莉</h1>
                     <p class="site-description">
-                        Suppablog is simple and yet cool wordpress theme to lorem ipsum dolor sit.
+                        这里是茉莉的小站。
                     </p>
                 </div>
                 <nav id="header-main-menu">
@@ -76,7 +76,7 @@
                 </div>
                 <div class="social-holder">
                     <div class="social-list">
-                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="https://x.com/molloliy"><i class="fa fa-twitter"></i></a>
                         <!--
                         <a href="#"><i class="fa fa-youtube-play"></i></a>
                         <a href="#"><i class="fa fa-facebook"></i></a>
@@ -103,16 +103,16 @@
                                 <div class="cat-links">
                                     <ul>
                                         <li>
-                                            <a href="#">Crafting</a>
+                                            <a href="#">日常</a>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="entry-date published">February 12, 2016</div>
+                                <div class="entry-date published">2025/8/14</div>
                                 <h2 class="entry-title">
-                                    <a href="single.html">Whatever is begun in anger ends in shame</a>
+                                    <a href="single.html">欢迎来到我的网站</a>
                                 </h2>
                                 <div class="excerpt">
-                                    Now when I had mastered the language of this water and had come to know every trifling feature that bordered the great river as familiarly as I knew the letters of the alphabet, I had made a valuable acquisition. I still keep in mind a certain wonderful sunset which I witnessed when and steamboating<a class="read-more" href="single.html"></a>
+                                    本网站建立于2025年8月14日，至今一进运行<p>网站已运行 <span id="days-run"></span> 天</p>天了！<a class="read-more" href="single.html"></a>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -228,7 +228,7 @@
             </div>
 
             <div class="featured-image-holder">
-                <div class="featured-post-image" style="background-image: url(demo-images/featured-image.jpg)"></div>
+                <div class="featured-post-image" style="background-image: url(demo-images/Asuka裁剪。png)"></div>
 
             </div>
             <div class="clear"></div>
@@ -246,6 +246,24 @@
         <script type='text/javascript' src='js/jquery.touchSwipe.min.js'></script>
         <script type='text/javascript' src='js/jquery.easing.1.3.js'></script>
         <script type='text/javascript' src='js/main.js'></script>
+        <script>
+document.querySelector('.load-more-holder').addEventListener('click', function() {
+    window.location.href = 'blog/index.html'; // 跳转到文章列表页
+});
+</script>
+        <script>
+  // 设置你的网站上线日期（格式：YYYY-MM-DD）
+  var launchDate = new Date('2025-08-14');
+  var now = new Date();
+
+  // 计算运行天数，向下取整
+  var diffTime = now - launchDate; // 毫秒
+  var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  // 显示到页面
+  document.getElementById('days-run').innerText = diffDays;
+</script>
     </body>
 </html>
+
 
