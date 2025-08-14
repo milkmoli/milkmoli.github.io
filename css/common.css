@@ -679,6 +679,7 @@ span.cbp-biprev:before {
     display: block;
 }
 
+
 /* New新增 */
 
 .load-more-holder {
@@ -696,3 +697,17 @@ span.cbp-biprev:before {
 }
 /* 这是设置头像大小和形状 */
 
+
+#search-results ul {
+  padding-left: 16px;
+  margin-top: 8px;
+}
+#search-results li {
+  margin-bottom: 5px;
+}
+#search-results span {
+  background: yellow;
+  color: #222;
+  font-weight: bold;
+}
+/* 这是设置搜索框 */
