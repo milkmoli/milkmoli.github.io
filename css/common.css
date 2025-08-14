@@ -678,3 +678,9 @@ span.cbp-biprev:before {
 .no-js.backgroundsize .cbp-bislideshow li:first-child img {
     display: block;
 }
+
+/* New新增 */
+
+.load-more-holder {
+    cursor: pointer;
+}
