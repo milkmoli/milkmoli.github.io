@@ -70,3 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   renderPage(currentPage);
 });
+
+
+/* 强制关闭 */
+window.addEventListener('load', () => {
+  const loader = document.querySelector('.doc-loader');
+  if (loader) loader.style.display = 'none';
+});
