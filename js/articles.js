@@ -41,6 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+const externalMap = {
+  '1':  'https://google.com',
+
+  // 想加更多继续写
+};
+
+document.getElementById('search-input')
+  .addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;          // 回车才触发
+    const num = this.value.trim();
+    if (externalMap[num]) {
+      e.preventDefault();                   // 阻止默认搜索
+      window.location.href = externalMap[num];
+    }
+  });
+
 // 特殊数字跳转表
 const secretMap = {
   '404':  '/not-found-404.html'    // 输入 404 跳到 404 彩蛋
