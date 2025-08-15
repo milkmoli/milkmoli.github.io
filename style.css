@@ -1411,3 +1411,23 @@ body.open .site-content
 
 
 }
+
+
+
+#blog-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 20px;
+}
+.card{
+  /* 下面这一行是关键：一行 3 张 */
+  flex: 0 0 calc(33.333% - 14px);
+  /* 14px = 2/3 * gap(20px) ，保证 3×3 无多余空隙 */
+  box-sizing:border-box;
+}
+@media(max-width:768px){
+  .card{flex:0 0 100%}
+}
