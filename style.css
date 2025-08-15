@@ -159,8 +159,8 @@ input, textarea, select
     position: absolute;
     background-color: #2D2D2D;
     height: 100% !important;
-    width: 420px;
-    left: -320px;
+    width: 400px;
+    left: -300px;
     -webkit-transition: left 0.3s ease;
     -moz-transition: left 0.3s ease;
     -ms-transition: left 0.3s ease;
@@ -176,7 +176,7 @@ input, textarea, select
 
 .menu-left-part
 {
-    width: 320px;
+    width: 300px;
     position: absolute;
     background: #333333;
     height: 100%;
@@ -416,7 +416,7 @@ body.page-scroll .site-content
 
 body.open .site-content
 {
-    margin-left: 420px;
+    margin-left: 400px;
 }
 
 
@@ -1408,5 +1408,6 @@ body.open .site-content
     {
         margin-left: 4px;
     }
+
 
 }
