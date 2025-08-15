@@ -41,6 +41,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+// 特殊数字跳转表
+const secretMap = {
+  '404':  '/not-found-404.html'    // 输入 404 跳到 404 彩蛋
+};
+
+// 监听输入
+input.addEventListener('input', () => {
+  const val = input.value.trim();
+
+  // 1️⃣ 先处理特殊数字
+  if (secretMap[val]) {
+    window.location.href = secretMap[val];
+    return;  // 直接跳转，不再继续搜索
+  }
+
+  // 2️⃣ 原有搜索逻辑继续保留
+  const kw = val.toLowerCase();
+  if (!kw) { results.innerHTML = ''; return; }
+  const matched = articles.filter(a =>
+    a.title.toLowerCase().includes(kw) ||
+    a.excerpt.toLowerCase().includes(kw)
+  );
+  render(matched);
+});
+  
   input.addEventListener('input', () => {
     const kw = input.value.trim().toLowerCase();
     if (!kw) { results.innerHTML = ''; return; }
