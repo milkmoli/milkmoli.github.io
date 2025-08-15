@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     img: `https://picsum.photos/400/180?random=${i}`
   }));
 
-  const pageSize = 10;
+  const pageSize = 9;
   let currentPage = 1;
   const totalPage = Math.ceil(fakeData.length / pageSize);
 
