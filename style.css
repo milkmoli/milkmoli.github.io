@@ -176,7 +176,7 @@ input, textarea, select
 
 .menu-left-part
 {
-    width: 300px;
+    width: 320px;
     position: absolute;
     background: #333333;
     height: 100%;
@@ -1409,6 +1409,4 @@ body.open .site-content
         margin-left: 4px;
     }
 
-
 }
-
