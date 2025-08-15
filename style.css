@@ -1431,3 +1431,14 @@ body.open .site-content
 @media(max-width:768px){
   .card{flex:0 0 100%}
 }
+
+
+
+
+#search-results li{
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+}
+#search-results mark{
+    background:#fffd8f;
+}
