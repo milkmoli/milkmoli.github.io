@@ -482,7 +482,7 @@ body.open .site-content
 
 .read-more
 {
-    background-image: url('images/arrow.png');
+    background-image: url('../images/arrow.png');
     width: 30px;
     height: 30px;
     background-size: 30px;
@@ -1408,5 +1408,6 @@ body.open .site-content
     {
         margin-left: 4px;
     }
+
 
 }
