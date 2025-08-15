@@ -2,7 +2,7 @@
 
 写了个网站记录生活
 
-![首页](路径demo-images/首页.png)
+![首页](demo-images/首页.png)
 
 [milkmoli的网站](https://milkmoli.github.io/)
 
