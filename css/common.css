@@ -685,7 +685,7 @@ span.cbp-biprev:before {
 .load-more-holder {
     cursor: pointer;
 }
-/* 这是让鼠标在load-more-holder上是小手图标 */
+/* 鼠标在load-more-holder上是小手图标 */
 
 
 .site-avatar {
@@ -695,7 +695,7 @@ span.cbp-biprev:before {
   display: block;
   margin: 0 auto 12px;
 }
-/* 这是设置头像大小和形状 */
+/* 设置头像大小和形状 */
 
 
 #search-results ul {
@@ -710,4 +710,11 @@ span.cbp-biprev:before {
   color: #222;
   font-weight: bold;
 }
-/* 这是设置搜索框 */
+/* 设置搜索框 */
+
+#clock {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: #333;
+}
+/* 设置时间样式 */
