@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <title>茉莉的小站</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="keywords" content="HTML, CSS, JavaScript, PHP" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <link rel="shortcut icon" href="../images/favicon.png" />
+        <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700%7CLibre+Baskerville:400,400italic,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css"  href='../css/clear.css' />
+        <link rel="stylesheet" type="text/css"  href='../css/common.css' />
+        <link rel="stylesheet" type="text/css"  href='../css/font-awesome.min.css' />
+        <link rel="stylesheet" type="text/css"  href='../css/carouFredSel.css' />
+        <link rel="stylesheet" type="text/css"  href='../css/sm-clean.css' />
+        <link rel="stylesheet" type="text/css"  href='../style.css' />
+
+        <!--[if lt IE 9]>
+                <script src="js/html5.js"></script>
+        <![endif]-->
+
+
+        <style>
+        .center-relative{max-width:1200px;margin:0 auto;}
+        .card{flex:0 0 calc(33.333% - 14px);}
+        
+        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:#f7f7f7}
+        #blog-grid{display:flex;flex-wrap:wrap;gap:20px;max-width:1200px;margin:40px auto;padding:0 20px}
+        .card{flex:1 1 calc(33.333% - 20px);min-width:280px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;flex-direction:column}
+        .card img{width:100%;height:180px;object-fit:cover}
+        .card-body{padding:15px;flex:1;display:flex;flex-direction:column}
+        .card-meta{font-size:12px;color:#777;margin-bottom:8px}
+        .card-meta span{margin-right:10px}
+        .card-title{font-size:18px;font-weight:600;margin:0 0 8px}
+        .card-excerpt{font-size:14px;color:#333;flex:1;margin-bottom:10px}
+        .pagination{margin:40px auto;text-align:center}
+        .pagination button{padding:8px 16px;margin:0 8px;border:1px solid #ccc;background:#fff;cursor:pointer;border-radius:4px}
+        .pagination button:disabled{cursor:not-allowed;opacity:.5}
+        .hide{display:none}
+        @media(max-width:768px){.card{flex:1 1 100%}}
+        </style>
+
+
+        
+    </head>
+
+
+    <body class="home blog">
+
+        <!-- Preloader Gif -->
+        <table class="doc-loader">
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="../images/ajax-document-loader.gif" alt="Loading...">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Left Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <div class="menu-left-part">
+                <div class="search-holder">
+                    <label>
+                        <input type="search" class="search-field" id="search-input" placeholder="输入关键词..." value="" name="s" title="Search for:" autocomplete="off">
+                    </label>
+                </div>
+                <div id="search-results"></div>
+                <div class="site-info-holder">
+                    <img src="../demo-images/avatar.png" alt="头像" class="site-avatar" />
+                    <h1 class="site-title">茉莉</h1>
+                    <p class="site-description">
+                        这里是茉莉的小站。
+                    </p>
+                </div>
+                <nav id="header-main-menu">
+                    <ul class="main-menu sm sm-clean">
+                        <li><a href="index.html" class="current">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <!--
+                        <li><a href="contact.html">Contact</a></li>
+                        -->
+                    </ul>
+                </nav>
+                <footer>
+                    <div class="footer-info">
+                        <span id="clock"></span>. <br> <a target="_blank" href="https://milkmoli.github.io/secretbase" title="Ciallo～(∠・ω< )⌒☆">Ciallo～(∠・ω< )⌒☆</a>.
+                    </div>
+                </footer>
+            </div>
+            <div class="menu-right-part">
+                <div class="logo-holder">
+                    <a href="/index.html">
+                        <img src="../images/logo.png" alt="Suppablog WP">
+                    </a>
+                </div>
+                <div class="toggle-holder">
+                    <div id="toggle">
+                        <div class="menu-line"></div>
+                    </div>
+                </div>
+                <div class="social-holder">
+                    <div class="social-list">
+                        <a href="https://x.com/molloliy"><i class="fa fa-twitter"></i></a>
+                        <a href="https://github.com/milkmoli"><i class="fa fa-github" style="color:#f;"></i>
+                        <!--
+                        <a href="#"><i class="fa fa-youtube-play"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-vimeo"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                        <a href="#"><i class="fa fa-rss"></i></a>
+                        -->
+                    </div>
+                </div>
+                <div class="fixed scroll-top"><i class="fa fa-caret-square-o-up" aria-hidden="true"></i></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <!-- Single Content -->
+        <div id="content" class="site-content center-relative">
+            <div class="single-post-wrapper content-1070 center-relative">
+
+                <article class="center-relative">
+                  <header>
+                    <h1 class="entry-title">所有文章</h1>
+                    <p class="post-info">共 27 篇，已加载 <span id="loaded-count">9</span> 篇</p>
+                  </header>
+
+                  <!-- 卡片区域 -->
+                  <link rel="stylesheet" href="../css/blog-cards.css">
+                  <div id="blog-grid"></div>
+
+                  <!-- 分页 -->
+                  <div class="pagination">
+                    <button id="prev" onclick="changePage(-1)">上一页</button>
+                    <span id="page-info"></span>
+                    <button id="next" onclick="changePage(1)">下一页</button>
+                  </div>
+                </article>
+
+        
+
+        <!--Load JavaScript-->
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type='text/javascript' src='../js/imagesloaded.pkgd.js'></script>
+        <script type='text/javascript' src='../js/jquery.nicescroll.min.js'></script>
+        <script type='text/javascript' src='../js/jquery.smartmenus.min.js'></script>
+        <script type='text/javascript' src='../js/jquery.carouFredSel-6.0.0-packed.js'></script>
+        <script type='text/javascript' src='../js/jquery.mousewheel.min.js'></script>
+        <script type='text/javascript' src='../js/jquery.touchSwipe.min.js'></script>
+        <script type='text/javascript' src='../js/jquery.easing.1.3.js'></script>
+        <script type='text/javascript' src='../js/main.js'></script>
+        <script src="../js/newupdata.js" defer></script>
+    </body>
+</html>
+                
+
+
+
+
+
+
+
