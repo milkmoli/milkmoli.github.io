@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var loadBtn = document.querySelector('.load-more-holder');
     if (loadBtn) {
         loadBtn.addEventListener('click', function () {
-            window.location.href = 'blog/blogindex.html';
+            window.location.href = 'blogindex.html';
         });
     }
 });
