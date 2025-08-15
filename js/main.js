@@ -264,5 +264,38 @@ var SendMail = function () {
 
 
 
+/* common.js */
+(function () {
+  // 只渲染一次，避免重复挂载
+  if (window.clockInitialized) return;
+  window.clockInitialized = true;
+
+  // 找容器，找不到就自动在 <body> 末尾插入一个
+  let clockBox = document.getElementById('clock');
+  if (!clockBox) {
+    clockBox = document.createElement('span');
+    clockBox.id = 'clock';
+    document.body.appendChild(clockBox);
+  }
+
+  // 补零函数
+  function pad(n) {
+    return n.toString().padStart(2, '0');
+  }
+
+  // 刷新时间
+  function tick() {
+    const d = new Date();
+    const str =
+      pad(d.getHours())   + ':' +
+      pad(d.getMinutes()) + ':' +
+      pad(d.getSeconds());
+    clockBox.textContent = str;
+  }
+
+  // 启动
+  tick();
+  setInterval(tick, 1000);
+})();
 
 
