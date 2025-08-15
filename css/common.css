@@ -695,8 +695,17 @@ span.cbp-biprev:before {
   display: block;
   margin: 0 auto 12px;
 }
-/* 设置头像大小和形状 */
+/* 头像居中 */
+.site-info-holder {
+    text-align: center;        /* 让内部行内/行内块元素水平居中 */
+}
 
+.site-avatar {
+    display: block;            /* 让 img 变成块元素，margin 可生效 */
+    margin: 0 auto;            /* 左右自动外边距 → 水平居中 */
+    max-width: 100%;           /* 防止大图溢出 */
+}
+/* 设置头像大小和形状 */
 
 #search-results ul {
   padding-left: 16px;
@@ -718,4 +727,5 @@ span.cbp-biprev:before {
   color: #f;
 }
 /* 设置时间样式 */
+
 
