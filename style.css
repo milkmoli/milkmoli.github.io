@@ -1443,7 +1443,7 @@ body.open .site-content
 
 
 /* 新增针对a标签的样式，限制点击区域为文字本身 */
-.load-more-holder .load-more-entries {
+.blog-holder, .load-more-holder {
     /* 让a标签仅包裹文字宽度 */
     display: inline-block;
     /* 清除可能继承的宽高 */
@@ -1453,3 +1453,4 @@ body.open .site-content
     /* 可选：添加鼠标悬停效果区分可点击状态 */
     cursor: pointer;
 }
+
