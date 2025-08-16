@@ -117,30 +117,3 @@ window.addEventListener('load', () => {
 
 
 
-/* 搜索按钮设置 */
-/* 清空按钮 */
-document.getElementById('clear-btn')?.addEventListener('click', () => {
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-results').innerHTML = '';
-  document.getElementById('search-input').focus();
-});
-
-/* 放大镜按钮 / 回车搜索 */
-const searchAction = () => {
-  const kw = document.getElementById('search-input').value.trim().toLowerCase();
-  const results = document.getElementById('search-results');
-  if (!kw) { results.innerHTML = ''; return; }
-
-  const matched = articles.filter(a =>
-    a.title.toLowerCase().includes(kw) ||
-    a.excerpt.toLowerCase().includes(kw)
-  );
-  results.innerHTML = matched.length
-    ? matched.map(a => `<li><a href="${a.url}"><strong>${a.title}</strong></a></li>`).join('')
-    : '<li>无结果</li>';
-};
-
-document.getElementById('search-btn')?.addEventListener('click', searchAction);
-document.getElementById('search-input')?.addEventListener('keydown', e => {
-  if (e.key === 'Enter') searchAction();
-});
