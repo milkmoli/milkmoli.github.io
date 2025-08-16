@@ -19,6 +19,30 @@
                 <script src="js/html5.js"></script>
         <![endif]-->
 
+        <title>固定右侧图片</title>
+            <style>
+                body {
+                    /* 为了演示滚动效果，增加页面高度 */
+                    height: 2000px;
+                    margin: 0;
+                }
+        
+                .fixed-image {
+                    /* 固定定位 */
+                    position: fixed;
+                    /* 右侧距离为0 */
+                    right: 0;
+                    /* 垂直居中 */
+                    top: 50%;
+                    transform: translateY(-50%);
+                    /* 可以根据需要调整图片大小 */
+                    width: 200px;
+                    /* 可选：添加边框和阴影美化 */
+                    border: 2px solid #ccc;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                }
+            </style>
+
     </head>
 
 
@@ -51,6 +75,9 @@
                         这里是茉莉的小站。
                     </p>
                 </div>
+                <div>
+                    <hr>
+                </div>
                 <nav id="header-main-menu">
                     <ul class="main-menu sm sm-clean">
                         <li><a href="index.html">Home</a></li>
@@ -61,6 +88,7 @@
                         -->
                     </ul>
                 </nav>
+                <div style="flex-grow: 1;"></div>
                 <footer>
                     <div class="footer-info">
                         <span id="clock"></span>. <br> <a target="_blank" href="#" title="Ciallo～(∠・ω< )⌒☆">Ciallo～(∠・ω< )⌒☆</a>.
@@ -97,6 +125,7 @@
         </div>
 
         <!-- Single Content -->
+        <img src="demo-images/Asuka竖.png" alt="固定在右侧的图片" class="fixed-image">
         <div id="content" class="site-content center-relative">
             <div class="single-post-wrapper content-1070 center-relative">
 
@@ -165,11 +194,7 @@
                 </style>
             </div>
         </div>
-<div class="featured-image-holder">
-    <div class="featured-post-image" style="background-image: url(demo-images/Asuka竖.png)"></div>
 
-    </div>
-<div class="clear"></div>
 
 
         <!--Load JavaScript-->
@@ -186,8 +211,3 @@
         <script type='text/javascript' src="/js/articles.js" defer></script>
     </body>
 </html>
-
-
-
-
-
