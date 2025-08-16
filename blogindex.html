@@ -60,18 +60,21 @@
 
         <!-- Left Sidebar -->
         <div id="sidebar" class="sidebar">
-            <div class="menu-left-part">
+            <div class="menu-left-part" style="display: flex; flex-direction: column; height: 100%;">
                 <div class="search-holder">
                   <input type="search" id="search-input" class="search-field"
                          placeholder="输入关键词..." autocomplete="off">
                 </div>
                 <ul id="search-results" style="list-style:none;padding:0;"></ul>
                 <div class="site-info-holder">
-                    <img src="../demo-images/avatar.png" alt="头像" class="site-avatar" />
+                    <img src="demo-images/avatar.png" alt="头像" class="site-avatar" />
                     <h1 class="site-title">茉莉</h1>
                     <p class="site-description">
                         这里是茉莉的小站。
                     </p>
+                </div>
+                <div>
+                    <hr>
                 </div>
                 <nav id="header-main-menu">
                     <ul class="main-menu sm sm-clean">
@@ -83,7 +86,8 @@
                         -->
                     </ul>
                 </nav>
-                <footer>
+                <div style="flex-grow: 1;"></div>
+                <footer style="margin-top: auto;">
                     <div class="footer-info">
                         <span id="clock"></span>. <br> <a target="_blank" href="#" title="Ciallo～(∠・ω< )⌒☆">Ciallo～(∠・ω< )⌒☆</a>.
                     </div>
@@ -158,6 +162,7 @@
     </body>
 </html>
                 
+
 
 
 
