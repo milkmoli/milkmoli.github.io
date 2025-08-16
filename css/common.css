@@ -770,9 +770,3 @@ span.cbp-biprev:before {
     color:#aaa;
 }
 
-/* 搜索图标设置 */
-.search-holder{position:relative;max-width:280px;margin:0 auto;}
-.search-field{width:100%;padding:10px 40px 10px 15px;border-radius:25px;border:1px solid #555;background:#2e2e2e;color:#fff;outline:none;}
-.clear-btn,.search-btn{position:absolute;top:50%;transform:translateY(-50%);border:none;background:none;font-size:16px;cursor:pointer;color:#aaa;}
-.clear-btn{right:40px;}
-.search-btn{right:12px;}
