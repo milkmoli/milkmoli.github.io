@@ -730,5 +730,10 @@ span.cbp-biprev:before {
 /* 设置时间样式 */
 
 
+/* 让侧栏标题和描述一起向左平移 25 像素 */
+.site-info-holder .site-title,
+.site-info-holder .site-description {
+  transform: translateX(-25px);
+}
 
 
