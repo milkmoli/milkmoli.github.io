@@ -19,7 +19,25 @@
                 <script src="js/html5.js"></script>
         <![endif]-->
 
+        <title>自适应高度的固定右侧图片</title>
+    <style>
+            body {
+                height: 2000px;
+                margin: 0;
+                padding-right: 15px; /* 避免内容被图片遮挡 */
+            }
 
+            .fixed-image {
+                position: fixed;
+                right: 0;
+                top: 0; /* 从顶部开始 */
+                height: 100vh; /* 高度等于视口高度 */
+                width: auto; /* 宽度自动按比例计算 */
+                object-fit: cover; /* 保持比例并覆盖整个容器 */
+                border-left: 2px solid #ccc;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+        </style>
 
     </head>
 
@@ -172,7 +190,7 @@
             </div>
         </div>
 
-
+        <img src="/demo-images/Asuka竖.png" alt="固定在右侧的图片" class="fixed-image">
 
         <!--Load JavaScript-->
         <script type="text/javascript" src="/js/jquery.js"></script>
@@ -188,10 +206,3 @@
         <script type='text/javascript' src="/js/articles.js" defer></script>
     </body>
 </html>
-
-
-
-
-
-
-
