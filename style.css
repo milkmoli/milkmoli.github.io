@@ -1440,3 +1440,16 @@ body.open .site-content
   /* 可选：调整标题与下方内容的间距 */
   margin-bottom: 20px;
 }
+
+
+/* 新增针对a标签的样式，限制点击区域为文字本身 */
+.load-more-holder .load-more-entries {
+    /* 让a标签仅包裹文字宽度 */
+    display: inline-block;
+    /* 清除可能继承的宽高 */
+    width: auto;
+    /* 可选：添加文字内边距（不影响整体点击范围） */
+    padding: 4px 8px; /* 仅文字周围有点击区域 */
+    /* 可选：添加鼠标悬停效果区分可点击状态 */
+    cursor: pointer;
+}
