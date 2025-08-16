@@ -777,3 +777,12 @@ span.cbp-biprev:before {
 #search-results a:hover{
     color: #0697ae;
 }
+
+
+
+/* 把 × 往左移 10px（原来是 40px → 50px） */
+#clear-btn {
+    right: 50px;
+}
+
+/* 如果用的是类名 .clear-btn，就改成 .clear-btn {...} */
