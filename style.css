@@ -1428,3 +1428,15 @@ body.open .site-content
 @media(max-width:768px){
   .card{flex:0 0 100%}
 }
+
+
+/* 可以添加到现有style标签中，或对应的CSS文件 */
+.entry-title {
+  /* 与正文容器保持相同宽度 */
+  max-width: 660px;
+  /* 与正文保持一致的居中方式 */
+  margin-left: auto;
+  margin-right: auto;
+  /* 可选：调整标题与下方内容的间距 */
+  margin-bottom: 20px;
+}
