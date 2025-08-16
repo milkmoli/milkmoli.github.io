@@ -2,13 +2,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const articles = [
     // 以后改这里：每篇文章一行
-    { title: '茉莉的小站开张啦', url: 'blog/2025-08/2025-08-14/2025-08-14.html', category: '日常', date: '2025-08-14', excerpt: '欢迎来到我的小站……' },
-    { title: '关于茉莉的故事', url: 'blog/2025-08/2025-08-15/2025-08-15.html',  category: '日常', date: '2025-08-15', excerpt: '' },
-    { title: '技术分享：如何搭建个人博客', url: 'blog/2025-08/2025-08-16/2025-08-16.html', category: '技术', date: '2025-08-16', excerpt: '用 GitHub Pages 快速搭建个人博客……' }
-    { title: '网站维护备忘录', url: 'blog/2025-08/2025-08-17/2025-08-17.html', category: '技术', date: '2025-08-17', excerpt: '' }
-    { title: '', url: 'blog/2025-08/2025-08-18/2025-08-18.html', category: '日常', date: '2025-08-18', excerpt: '' }
-    { title: '', url: 'blog/2025-08/2025-08-19/2025-08-19.html', category: '日常', date: '2025-08-19', excerpt: '' }
-    { title: '', url: 'blog/2025-08/2025-08-20/2025-08-20.html', category: '日常', date: '2025-08-20', excerpt: '' }
+    { title: '茉莉的小站开张啦', url: 'blog/2025-08/2025-08-14.html', category: '日常', date: '2025-08-14', excerpt: '欢迎来到我的小站……' },
+    { title: '关于茉莉的故事', url: 'blog/2025-08/2025-08-15.html',  category: '日常', date: '2025-08-15', excerpt: '' },
+    { title: '技术分享：如何搭建个人博客', url: 'blog/2025-08/2025-08-16.html', category: '技术', date: '2025-08-16', excerpt: '用 GitHub Pages 快速搭建个人博客……' }
+    { title: '网站维护备忘录', url: 'blog/2025-08/2025-08-17.html', category: '技术', date: '2025-08-17', excerpt: '' }
+    { title: '', url: 'blog/2025-08/2025-08-18.html', category: '日常', date: '2025-08-18', excerpt: '' }
+    { title: '', url: 'blog/2025-08/2025-08-19.html', category: '日常', date: '2025-08-19', excerpt: '' }
+    { title: '', url: 'blog/2025-08/2025-08-20.html', category: '日常', date: '2025-08-20', excerpt: '' }
 
 
 
