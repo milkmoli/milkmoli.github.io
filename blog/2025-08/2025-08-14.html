@@ -19,29 +19,32 @@
                 <script src="js/html5.js"></script>
         <![endif]-->
 
-        <title>固定右侧图片</title>
-            <style>
-                body {
-                    /* 为了演示滚动效果，增加页面高度 */
-                    height: 2000px;
-                    margin: 0;
-                }
-        
-                .fixed-image {
-                    /* 固定定位 */
-                    position: fixed;
-                    /* 右侧距离为0 */
-                    right: 0;
-                    /* 垂直居中 */
-                    top: 50%;
-                    transform: translateY(-50%);
-                    /* 可以根据需要调整图片大小 */
-                    width: 200px;
-                    /* 可选：添加边框和阴影美化 */
-                    border: 2px solid #ccc;
-                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-                }
-            </style>
+        <title>自适应高度的固定右侧图片</title>
+        <style>
+            body {
+                height: 2000px;
+                margin: 0;
+                padding-right: 15px; /* 避免内容被图片遮挡 */
+            }
+
+            .fixed-image {
+                position: fixed;
+                right: 0;
+                top: 0; /* 从顶部开始 */
+                height: 100vh; /* 高度等于视口高度 */
+                width: auto; /* 宽度自动按比例计算 */
+                max-width: 30%; /* 限制最大宽度，避免在宽屏上太宽 */
+                object-fit: cover; /* 保持比例并覆盖整个容器 */
+                border-left: 2px solid #ccc;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+
+        .content {
+            max-width: 800px; /* 限制内容宽度，避免与图片重叠 */
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
 
     </head>
 
@@ -211,5 +214,3 @@
         <script type='text/javascript' src="/js/articles.js" defer></script>
     </body>
 </html>
-
-
