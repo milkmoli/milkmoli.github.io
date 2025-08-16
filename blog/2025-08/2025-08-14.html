@@ -190,6 +190,20 @@
             </div>
         </div>
 
+        <style>
+        .page-container {
+          display: flex; /* 使用弹性布局并排显示侧边栏和内容区 */
+          width: 100%;
+        }
+
+        .single-content {
+          flex: 1; /* 内容区占剩余宽度 */
+          margin-left: 100px; /* 关键：与侧边栏保持100px距离 */
+          /* 可选：添加内边距让内容更美观 */
+          padding: 20px;
+        }
+        </style>
+
         <img src="/demo-images/Asuka竖.png" alt="固定在右侧的图片" class="fixed-image">
 
         <!--Load JavaScript-->
@@ -206,3 +220,4 @@
         <script type='text/javascript' src="/js/articles.js" defer></script>
     </body>
 </html>
+
