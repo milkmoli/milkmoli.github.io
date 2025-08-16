@@ -682,12 +682,13 @@ span.cbp-biprev:before {
 
 /* New新增 */
 
+/* 鼠标在load-more-holder上是小手图标 */
 .load-more-holder {
     cursor: pointer;
 }
-/* 鼠标在load-more-holder上是小手图标 */
 
 
+/* 头像大小形状 */
 .site-avatar {
   width: 200px;
   height: 200px;
@@ -695,7 +696,8 @@ span.cbp-biprev:before {
   display: block;
   margin: 0 auto 12px;
 }
-/* 头像大小形状 */
+
+/* 设置头像位置 */
 .site-info-holder {
     text-align: center;        /* 让内部行内/行内块元素水平居中 */
 }
@@ -706,7 +708,15 @@ span.cbp-biprev:before {
     max-width: 100%;           /* 防止大图溢出 */
     transform: translateX(-25px);  /* 左移25像素 */
 }
-/* 设置头像位置 */
+
+/* 让侧栏标题和描述一起向左平移 25 像素 */
+.site-info-holder .site-title,
+.site-info-holder .site-description {
+  transform: translateX(-25px);
+}
+
+
+
 
 #search-results ul {
   padding-left: 16px;
@@ -730,11 +740,40 @@ span.cbp-biprev:before {
 /* 设置时间样式 */
 
 
-/* 让侧栏标题和描述一起向左平移 25 像素 */
-.site-info-holder .site-title,
-.site-info-holder .site-description {
-  transform: translateX(-25px);
+
+
+
+
+/* 搜索结果整体右移 */
+#search-results{
+    margin-left: 25px;          /* 整体向右 25 px */
+    max-width: 260px;           /* 防止溢出 */
 }
 
+/* 每条结果卡片 */
+#search-results li{
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border: 1px solid #555;     /* 边框 */
+    border-radius: 6px;
+    background: #2e2e2e;        /* 卡片底色 */
+    color: #fff;                /* 文字白色 */
+    line-height: 1.4;
+}
 
+/* 高亮关键字 */
+#search-results mark{
+    background: #fffd8f;
+    color: #000;
+    padding: 0 2px;
+    border-radius: 2px;
+}
 
+/* 链接去下划线 */
+#search-results a{
+    color: #fff;
+    text-decoration: none;
+}
+#search-results a:hover{
+    color: #0697ae;
+}
