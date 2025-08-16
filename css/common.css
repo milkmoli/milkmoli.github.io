@@ -750,16 +750,13 @@ span.cbp-biprev:before {
     max-width: 260px;           /* 防止溢出 */
 }
 
-/* 每条结果卡片 */
+/* 去掉边框，只留底部分隔线 */
 #search-results li{
-    padding: 8px 12px;
-    margin-bottom: 8px;
-    border: 1px solid #555;     /* 边框 */
-    border-radius: 6px;
-    background: #2e2e2e;        /* 卡片底色 */
-    color: #fff;                /* 文字白色 */
-    line-height: 1.4;
+    padding: 8px 0;
+    color: #fff;            /* 文字白色 */
+    border-bottom: 1px solid #555;   /* 底部分隔线 */
 }
+
 
 /* 高亮关键字 */
 #search-results mark{
@@ -786,3 +783,4 @@ span.cbp-biprev:before {
 }
 
 /* 如果用的是类名 .clear-btn，就改成 .clear-btn {...} */
+
