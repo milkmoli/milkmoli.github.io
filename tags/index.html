@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>标签 | 茉莉的小站</title><meta name="author" content="milkmoli"><meta name="copyright" content="milkmoli"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#4A9CFF"><meta property="og:type" content="website">
+<meta property="og:title" content="标签">
+<meta property="og:url" content="https://milkmoli.github.io/tags/index.html">
+<meta property="og:site_name" content="茉莉的小站">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/225142153">
+<meta property="article:published_time" content="2025-11-27T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-09T08:04:51.958Z">
+<meta property="article:author" content="milkmoli">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/225142153"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/icon.png"><link rel="canonical" href="https://milkmoli.github.io/tags/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#2A6BB0')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#4A9CFF')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '标签',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><style>
+  /* 全屏遮罩层：铺满整个屏幕 */
+  #pwd-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.99) !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  #pwd-modal .pwd-content {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+  #pwd-modal .pwd-title {
+    margin: 0 0 25px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  #pwd-modal #pwd-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+  #pwd-modal #pwd-btn {
+    width: 100%;
+    padding: 12px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    box-sizing: border-box;
+  }
+  #pwd-modal #pwd-btn:hover {
+    background: #0056b3;
+  }
+  #pwd-modal #error-tip {
+    color: #ff4444;
+    font-size: 14px;
+    margin: 10px 0 0 0;
+    display: none;
+  }
+  @media (max-width: 480px) {
+    #pwd-modal .pwd-content {
+      padding: 30px 20px;
+    }
+    #pwd-modal .pwd-title {
+      font-size: 18px;
+    }
+  }
+</style>
+<meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://avatars.githubusercontent.com/u/225142153" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-tags" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(https://raw.githubusercontent.com/milkmoli/milkmoliimg/refs/heads/main/index/bg.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">茉莉的小站</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">标签</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="tag-cloud-list text-center"><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 1.2em; background-color: rgb(51, 97, 50);">脚本</a><a href="/tags/Hexo/" style="font-size: 1.2em; background-color: rgb(118, 148, 159);">Hexo</a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.2em; background-color: rgb(99, 154, 108);">教程</a><a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 1.2em; background-color: rgb(185, 50, 50);">随笔</a></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/225142153" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">milkmoli</div><div class="author-info-description">这里是茉莉的小站！</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/milkmoli"><i class="fab fa-github"></i><span>milkmoli</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/milkmoli" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://x.com/molloliy" target="_blank" title="Twitter"><i class="fab fa-twitter" style="color: #1da1f2;"></i></a><a class="social-icon" href="https://space.bilibili.com/1736355700" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #FB7299;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/01/01/%E6%96%B0%E5%B9%B4%E5%BF%AB%E4%B9%90/" title="新年快乐">新年快乐</a><time datetime="2026-01-01T00:00:00.000Z" title="发表于 2026-01-01 08:00:00">2026-01-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/12/Sankaku%E8%84%9A%E6%9C%AC/" title="Sankaku脚本">Sankaku脚本</a><time datetime="2025-12-11T16:00:00.000Z" title="发表于 2025-12-12 00:00:00">2025-12-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" title="我的第一篇文章">我的第一篇文章</a><time datetime="2025-11-16T02:00:00.000Z" title="发表于 2025-11-16 10:00:00">2025-11-16</time></div></div></div></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">3</div></div><div class="webinfo-item"><div class="item-name">运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2025-07-20T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-01-09T09:17:37.299Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By milkmoli</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div><script>
+  // 1. 基础配置（替换为你的密码）
+  const PASSWORD = 'shengyibei';
+  const VERIFY_KEY = 'site_pwd_verified';
+  let isVerified = false; // 初始化变量，解决未定义报错
+
+  // 2. 检测localStorage是否可用（兼容Safari无痕模式）
+  function isLocalStorageSupported() {
+    const testKey = '__test_safari_storage__';
+    try {
+      localStorage.setItem(testKey, testKey);
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 3. 读取验证状态（优先localStorage，失败用Cookie兜底）
+  function getVerifyState() {
+    // 先检查localStorage
+    if (isLocalStorageSupported()) {
+      return localStorage.getItem(VERIFY_KEY) === 'true';
+    }
+    // localStorage不可用时，读取Cookie
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === VERIFY_KEY && value === 'true') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 4. 保存验证状态（兼容Safari）
+  function saveVerifyState() {
+    if (isLocalStorageSupported()) {
+      localStorage.setItem(VERIFY_KEY, 'true');
+    } else {
+      // Cookie有效期6小时，适配无痕模式
+      document.cookie = `${VERIFY_KEY}=true; max-age=21600; path=/; SameSite=Lax`;
+    }
+  }
+
+  // 5. 封装验证函数
+  function verifyPassword(inputVal) {
+    const pwdInput = document.getElementById('pwd-input');
+    const errorTip = document.getElementById('error-tip');
+    if (!pwdInput || !errorTip) return; // 防止元素未加载报错
+
+    const val = inputVal.trim();
+    if (val === PASSWORD) {
+      saveVerifyState();
+      document.getElementById('pwd-modal')?.remove(); // 可选链避免报错
+    } else {
+      errorTip.style.display = 'block';
+      pwdInput.value = '';
+      setTimeout(() => {
+        errorTip.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  // 6. 核心逻辑：检查验证状态（关键：提前赋值isVerified）
+  isVerified = getVerifyState();
+
+  // 7. 未验证则显示密码面板
+  if (!isVerified) {
+    // 构建面板HTML
+    const pwdHtml = `
+      <div id="pwd-modal">
+        <div class="pwd-content">
+          <h3 class="pwd-title">该网站需要密码访问</h3>
+          <input type="password" id="pwd-input" placeholder="请输入密码">
+          <button id="pwd-btn">确认</button>
+          <p id="error-tip">密码错误，请重新输入！</p>
+        </div>
+      </div>
+    `;
+    // 插入面板（确保DOM加载完成）
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.insertAdjacentHTML('afterbegin', pwdHtml);
+        bindEvents();
+      });
+    } else {
+      document.body.insertAdjacentHTML('afterbegin', pwdHtml);
+      bindEvents();
+    }
+  }
+
+  // 8. 绑定事件（抽离函数，避免重复代码）
+  function bindEvents() {
+    const pwdInput = document.getElementById('pwd-input');
+    const pwdBtn = document.getElementById('pwd-btn');
+    if (!pwdInput || !pwdBtn) return;
+
+    // 自动聚焦
+    pwdInput.focus();
+
+    // 回车验证
+    pwdInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        verifyPassword(pwdInput.value);
+      }
+    });
+
+    // 按钮点击验证
+    pwdBtn.addEventListener('click', () => {
+      verifyPassword(pwdInput.value);
+    });
+  }
+</script>
+<div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.2"></script></div></div></body></html>
