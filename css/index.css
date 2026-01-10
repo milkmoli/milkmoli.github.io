@@ -198,6 +198,7 @@ template {
 #aside-content .aside-list > .aside-list-item .content > .name,
 #aside-content .aside-list > .aside-list-item .content > .title,
 #aside-content .aside-list > .aside-list-item .content > .comment,
+#page-header #site-title,
 #post-info .post-title,
 .pagination-related .info .info-1 .info-item-2,
 .pagination-related .info .info-2 .info-item-1,
@@ -4304,7 +4305,7 @@ figure.highlight pre .javascript .function {
   width: 100%;
   background-color: #49b1f5;
   background-position: center center;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -4316,7 +4317,7 @@ figure.highlight pre .javascript .function {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: var(--mark-bg);
+  background-color: rgba(0,0,0,0.15);
   content: '';
 }
 #page-header.full_page {
@@ -4340,6 +4341,7 @@ figure.highlight pre .javascript .function {
   margin: 0;
   color: var(--white);
   font-size: 1.85em;
+  -webkit-line-clamp: 3;
 }
 @media screen and (min-width: 768px) {
   #page-header #site-title {
