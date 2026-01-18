@@ -246,6 +246,36 @@
       font-size: 18px;
     }
   }
+  /* 外层容器：控制整体宽度和居中 */
+  .four-images-row {
+    width: 100%;
+    max-width: 100%;  /* 不超出帖子宽度 */
+    margin: 20px auto;  /* 上下间距，居中显示 */
+    display: flex;
+    flex-wrap: wrap;  /* 移动端自动换行 */
+    justify-content: space-between;  /* 图片之间均匀分布 */
+    gap: 8px;  /* 图片之间的间距（可调整） */
+  }
+  /* 每张图片的样式 */
+  .four-images-row img {
+    width: calc(25% - 6px);  /* 4张均分，减去间距 */
+    height: auto;  /* 保持图片比例 */
+    border-radius: 8px;  /* 圆角（可选） */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* 轻微阴影（可选） */
+    object-fit: cover;  /* 图片裁剪适配（避免变形） */
+  }
+  /* 移动端适配：屏幕小于768px时，变成2列 */
+  @media (max-width: 768px) {
+    .four-images-row img {
+      width: calc(50% - 4px);  /* 2张均分 */
+    }
+  }
+  /* 超小屏（手机）适配：1列 */
+  @media (max-width: 480px) {
+    .four-images-row img {
+      width: 100%;  /* 1张占满宽度 */
+    }
+  }
 </style>
 <meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
   const $loadingBox = document.getElementById('loading-box')
