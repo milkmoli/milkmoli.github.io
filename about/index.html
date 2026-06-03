@@ -1,198 +1,310 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>关于茉莉 | 茉莉的小站</title><meta name="author" content="milkmoli"><meta name="copyright" content="milkmoli"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    
+    <meta name="author" content="The Redefine Team">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://milkmoli.github.io/about/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="关于茉莉">
 <meta property="og:url" content="https://milkmoli.github.io/about/index.html">
 <meta property="og:site_name" content="茉莉的小站">
-<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://avatars.githubusercontent.com/u/225142153">
+<meta property="og:image" content="https://milkmoli.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-11-27T08:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-01T10:59:57.523Z">
 <meta property="article:author" content="milkmoli">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/225142153"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/icon.png"><link rel="canonical" href="https://milkmoli.github.io/about/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.4/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
-    (() => {
-      
-    const saveToLocal = {
-      set: (key, value, ttl) => {
-        if (!ttl) return
-        const expiry = Date.now() + ttl * 86400000
-        localStorage.setItem(key, JSON.stringify({ value, expiry }))
-      },
-      get: key => {
-        const itemStr = localStorage.getItem(key)
-        if (!itemStr) return undefined
-        const { value, expiry } = JSON.parse(itemStr)
-        if (Date.now() > expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return value
-      }
-    }
-
-    window.btf = {
-      saveToLocal,
-      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
-        script.onload = script.onreadystatechange = () => {
-          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
-        }
-        script.onerror = reject
-        document.head.appendChild(script)
-      }),
-      getCSS: (url, id) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onload = link.onreadystatechange = () => {
-          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
-        }
-        link.onerror = reject
-        document.head.appendChild(link)
-      }),
-      addGlobalFn: (key, fn, name = false, parent = window) => {
-        if (!false && key.startsWith('pjax')) return
-        const globalFn = parent.globalFn || {}
-        globalFn[key] = globalFn[key] || {}
-        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
-        parent.globalFn = globalFn
-      }
-    }
-  
-      
-      const activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      const activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
-        }
-      }
-
-      btf.activateDarkMode = activateDarkMode
-      btf.activateLightMode = activateLightMode
-
-      const theme = saveToLocal.get('theme')
+<meta name="twitter:image" content="https://milkmoli.github.io/images/redefine-og.webp">
     
-          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
-          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
-
-          if (theme === undefined) {
-            if (mediaQueryLight.matches) activateLightMode()
-            else if (mediaQueryDark.matches) activateDarkMode()
-            else {
-              const hour = new Date().getHours()
-              const isNight = hour <= 6 || hour >= 18
-              isNight ? activateDarkMode() : activateLightMode()
-            }
-            mediaQueryDark.addEventListener('change', () => {
-              if (saveToLocal.get('theme') === undefined) {
-                e.matches ? activateDarkMode() : activateLightMode()
-              }
-            })
-          } else {
-            theme === 'light' ? activateLightMode() : activateDarkMode()
-          }
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
         
-      
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
-      }
+            关于茉莉 | Theme Redefine
+        
+    </title>
+
     
-      
-    const detectApple = () => {
-      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-  
-    })()
-  </script><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":true,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
-  translate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":400,"highlightFullpage":true,"highlightMacStyle":true},
-  copy: {
-    success: '复制成功',
-    error: '复制失败',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '天',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: false,
-  islazyloadPlugin: false,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: false,
-  },
-  autoDarkmode: true
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '关于茉莉',
-  isHighlightShrink: false,
-  isToc: false,
-  pageType: 'about'
-}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-swiper-x/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-swiper-x/lib/swiperstyle.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
-  const $loadingBox = document.getElementById('loading-box')
-  const $body = document.body
-  const preloader = {
-    endLoading: () => {
-      if ($loadingBox.classList.contains('loaded')) return
-      $body.style.overflow = ''
-      $loadingBox.classList.add('loaded')
-    },
-    initLoading: () => {
-      $body.style.overflow = 'hidden'
-      $loadingBox.classList.remove('loaded')
-    }
-  }
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
 
-  preloader.initLoading()
 
-  if (document.readyState === 'complete') {
-    preloader.endLoading()
-  } else {
-    window.addEventListener('load', preloader.endLoading)
-    document.addEventListener('DOMContentLoaded', preloader.endLoading)
-    // Add timeout protection: force end after 7 seconds
-    setTimeout(preloader.endLoading, 7000)
-  }
+    <!--- Inject Part-->
+    
 
-  if (false) {
-    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
-    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
-  }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://avatars.githubusercontent.com/u/225142153" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">茉莉的小站</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 文章</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-folder"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">关于茉莉</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="e13a303a25906f9543120f4c96e1aa09e93ecd25822e96a143bb95a90d2056f2">8b38e26f3369e39702f8c575b05e1bf15037c63a3d31963f6e32201786ace3358d68ef2eaa1c175c7aef5cb18fc46eaf8569c59b798bef470bc86f7cdeb685b22587bc0f9aef3cb5eabd324454deac34549cf9e620a754ed438c142553b595f74e63ea35fcd9e5d79ebcf91c316b01b4a057c5abd2c46f9b0a40eec10aade91a3db16b77b1363ba02dd1b800031d32cd74469cddea24dc09b4c07d89742374c23846ae9b888fcd506ad11c6f5e86744e9283aea0514c3de466f60a3c7e95d733a8b8d28f26e17509ba7d0bb51b5f1bd0167896867a87dfc969a6386e12d5d33322b88359583b9c671aced619f43cb669711719309caee73646d7475ce568b7342da5f1f8d052f4864c7e839eafd82ab5e8fe3eb53649aa0a08dbf1e364bcefce637db935cb543e5fcae26a09c9b29c4bb6dcb17c35de3843d2ef8feb65cf4c76dcc86d9a253822f0e92581cf474b91a5ffac94642307e28b56fa029b9c5e17d2d6efb267731108a5c8d34622b030c598a59a01f0884e93cca1a752164e5e43dc0292649fdaa9521ecfe25b33e0281e4cb7fb905a028412691a7c7a729de8e4ffc1198309a8ff03f301b5d6cc00e51aed93e9273f88b662a59a0b1a81901da95f713066451595c5da8aaa5bf60aefac8c821094363a1263306197cd8759bccd0555c8b1b3099b346f0c37cfa25f7fd6c87a197bcdd696eaaa3cf0c9f82c61f0a44d1abb1df17aec011f50f24d380085d98a2749b6c40be4f1a15d8e1cb785442116a360dbe407fc8a1c56f307b14e059f92c9c1e53dffa2c6d212b926b100b2f220a2b8d28021fc1daf7eca080705599982849a4d362bde08e7b78e6174d49f98a6814ba5082f268f3cf374478720348b41d1c975271caf903145849db99ca809baa18caa6c7e530134b549852630a84c245795c2265c36cd6af159477a24082eaf67cc420e0e92018a2e2603d456957c1975e58a2afe07a895773e43d361b8476d5ce0e6cb180c2f5cadf7e1f41031dfffcb69c29cd81c24592fc9526e8b094e4da97f88e66898c67ecde20fa512befdc3716343aa31803543ad1790cb7846aed833aae41e99f5eef3208e01a3fbe1e3f57c90dbc1b212256712eeac5076c8aca284733a3ae9e09ddf39dac6083ec11320d4645fb2b2f330e3dbcd7f29f2377c2e45b3f9a1544aba33c1fc6b63f3654566d6f3148ebc40bde8653eb6568f9db3041d2bb77232d5f4b4311755a17c0feb4ef4202a2ae89a75bb04ba68838329612ff3874c3a063929caf7bc1bf79b17721a710a296c6db5e9fde96232779d79e6f2cb11d4495b993cd1770bdb96adb8de59b8c1206d9c07bd93b8506f6ecef1567f60ec29f83a558a17912e8c0149a1d6c2593f68c1d88a8c72e6bb2317a48ae46926d074990dd82f0cf073cdab85ec665aa7423d89693e72372644c84651a180cfe0424de51ba5b482da8180bb7cdd9a8bcc29a7ac00ad4adbba3c213ef67fed493687fb70e8a612e3e510b30a74762359db5a3c43d8488441e51e88b121dacf9a9c43958e3cfdbfdced9916c14c58ed31812bb1a3f00d563825a8594700f8c094d3f88dc3dd1206584206288233362a5c178b134fca9152448f2b0a793510bfe8693f404e8418568304e7f5f974420c17ca0d001bc9fadab528ebb34570b31de97ea2da591e0bf11734fd0633bfa8d20b12e024597354f93c1c6f3c47ba1681469f7c70e0c615156ccebffd76f2a50853a91e40d03539f8d23449c9a2cccd67e7b9343a6782406bb517c617c250371365dff83cc340b056fa66bd94bbbfadb759cd0000ac4cf8932420f05ea99660694b8745a5148f63d8621092db43a54593dd61c57b298d2a0844f1eaf12779783937c52222e945aa0f9d0898c030632a27b42643c9b813ad63cb77b01bf8540371e5a12f961c20effcee5c36130e142d825d8489df9ac37ada3776934487ae7c99c5bcc2e15d4250097eac97dc4aff8deeec27e22aa6ff1ad0b06c436e34eed0e25306d1999e7089bb579c930ad89d372c</script>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"milkmoli.github.io","root":"/","language":"zh-CN","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Theme Redefine","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":[{"icon":"fa-brands fa-github","url":null},{"icon":"fa-brands fa-twitter","url":null},{"icon":"fa-solid fa-at","url":"you@example.com"},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"--fa-animation-duration: 0.5s; color: #f54545\"></i>","start":"2022/8/17 11:45:14","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2022/8/17 11:45:14","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Theme Redefine
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="page-template-container">
+	
+
+	
+
+	<div class="page-template-content markdown-body">
+		
+		<h1>关于茉莉</h1>
+		
+
+		
+<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="c9939126a51fed979589887984cfcd3aae84687b29a466bce638cbc9bce58fc9">0f5e9a8df6409576d59a502005a4e57add198fd17294381d4864f380b4e747d4da66fb5e77d6ca8bff0503bd37f3b48bfb03be9cd24a5c312e85947737983e1df0993c0285179049e4c6b12775a795a7ef00ff7dd5cd8ed5f0d6dfbff050ade54c9820db0eac7a5da7d3cb36da390a51fe7aa0c61ee6f066c921b7ade4f51eb43d167f09452b767cc7fc061889343cc478242c3bc8b65a9d6c63952d669ead48ff6c6b0e88f2c17b907fe442bdb1e24b78f4e20efc6f50b2f8a998ffc85cee0b5e7fd91011376f86733beac645b224aa9e52f0803b7ce0502ad2fd1c1ea9db63715160a1300130fe1e7447b7ae72a45d45d6855ddf0aaa623af190a4c55750172cf33f48b211991ec279161cb2188f5d4d645b2f7328c15518904e23c1256e4c673ad9b2e3103c1a4a5602b9056f5b7a1c7b2030ed3c07226f770a2628414e52835b7e5c45067f14750b4eaaa1a2ff967653098ee3a542ec4448de85ff9d547669483e06e512f90b748bd65e8587e46e217b2109f4aabac70d016082aacf7c8a5e3f4e60b59b3075d509eae2c62ec2331cf9914eb85761b66fb369f73f6ed4f23aeb6960593e46bf9c9627ea4a5ac07ae84d1f8aecf77df208183d60ae70b6ba483f968a3cfa07845e74c8da485472824c1f41557096b2f3051d49799b2e48d8bec49c2af37b4f452d14a96530d417c5edc8042a52f9865ac35b8329f827c946fba02419461549e0420ab1ee6f6e36c1ff47c3f3b18832059ef4017fba8cb7bf4c853128940ba0bd703e94df8bde9aed51cd4192ec4e9ed39697f5d138464dffed300fc7eb1069c1f2d508b83dbcb5d2dda933edb3f279cf999802ca39a30d7a9f085db993cbe4d487304052111de905beecdb965cb05a07c24da51d6c4b2f75b291fa37fce9304e753614a83dd1c611cefdbd3cfdc0c84342a19e92e8274749760f246e1e62c413f64b7dd234aeebd3a1ed3fdf41b102eb310e7c559b3cb41703098bcb2ff06f1b8aadf7c313222287b4e68db391a6a23137f5de7583d44ec54c8119ba58be894a688fd1318bec5485b815c9660749e5366b15b922fd5af486cfad5e92d3c26021f41ad9787a9e012de4f10ce1b98c4ef539a089e859342981e226ae9eec264a29f46bff624e654d7f1264c28882212d255c43cbd121689f8d833991cad1f6f6e27666254181e9d848c40ebfd435eec54bad802066e4f9a8cbdf36eb9a97b62a0c819c2ec2370fc46e9133ccc1eed9dcb173c67c7b0ee068fd6f10e57fa365eba674816342e4655d91f753a374fc9781231396bffe3442528bcb43bf0d04f3f37cb60d076b04c2b19e474dd4a2244ae05395c5c68e611761d230ced8f7e6acdc0a71184bd9756a39c8a7aa55990754e91f0f48080ead470b751a9fa4c4fbd60a5462e517c3852cb190b0cb22da9fc0334337aa5cbc33ad7e1c40de931fb50d0a8285952b0adefd71eae2fc88f97d8f27b1259aabf26d4a841e805c72b658016f443b9a2d728551658462960eb1ae5f56aad4aca43b06b7a96e48029c60a746d24b378db57145e9d093a1c3b601db0f52826cb460b94158b4e03ede6e006e3e2bbebc1ed350ccf13dd73d3a593f0753ad55fb88ebf2cd6966ab5c5e40c62b73ee98ee723973d0cf3e79536b43084098e8391d6628c0f9328564fb863be476f2dd47384f264f41b30e3470e04e5fa373bd138dffe5e86791e17eb8afb6923d4be31ee87a41b780e8072eaf626b422993b3daba026b3abc1dfc90b7120d5163f30c628a294c485eaabebf034fda1b1e7c1fb0c43d5379727b8e7687bb0cace7039d51178129db71b35c6d0bdc2d7f9095f4ba6c53de89fc4b774b8756acb86863a3dd3a23d9abd2983ac162928a9e85c18c838b51fc904a3d3ee4c3955baa52ae698607996b4d5cab4fc99e9eb30347b32b6743f37bc028e102c200b27bd8274c8978269aac5aca6b68c7c7659dc8b73bf772d31fc833da5ae161c4d05db0b9befba69831c3173fcfa953e86ae2aa51820d1f6ac5f2541ef440e69698270e35ef31448224125f93a7358c18062d0b9b28128ae3b865ba33cd839e0d6aabc32fdfaf6d1fe629a326d37e8af494e0c83484f66640ed8021e2155b3a7653815320aa053956f5041cf422d75d8ed2cf697ae5cbdc9685b28950eb2163e5bec496f78e38e8da374973d6c6af512971cee46f7ecb4682d685b7051c7d21dc8caab9c529097f39ca70ad1cbe1e04625fb0e619f4406b4e1dc9113cd3ed57007f5e6931eb6a415658bf09ae82649b73ab11d52e6e54c086ed592c52d3fdf837263538b11261594071ce2bc2ab9903d29f301406d656b89e24e83c645a7f99593f01a76bfe73ad48e575c152fea2c214a2d723c18b4399e80319f3088bdfc522d023b0c5f20e787135805ee4b3c77272738314ca923db8990ead80fa266cf8ba81d122e31316774343db96543b617926921f8b88d16eaae553fd73059bcf4ee96ebbc1bf4ed656bcf8845130e0b75669201cfc35467e0ce7e798a3ae47c24917aa63baed9c71dc3605ffcec54463c03dee1fc83c2f3867008caeb717050490afffcd2aa3c36c8e721af7807e1a9e093ae5506327c8aaa6e94b129c40a7a693e540c78f45842ba5c242922cd61a237c7e6e4b4b2c5579a162a43e2a936041afd871ec7cf4f2553409be4c6c348f7b8e0294f38f79ff36e57f32e382532724b33f88f33edbb2810838804aab8d12d25e866506840b4b2be9e6c99bee23ed693fd271a10cbe66f2647aa8027d3858ae8abbdca3a1858e6f2b592dc5917d9370a5dd5d364e3919e6e2d08bb58c6f789483b6cb53c634de64bb47e660decce2eac199703c1f9bb5bf46bcec5dcedafe85cd3aef365c60a95e245f99b7e113f258da175956ddd64a7f637403bb1c3240a6d79f71dea6ed4f6e7e80da372c0e5f7f0180ce82277ffe9132fe77ebf61c15ba68bd785847f026fa9912e9d1ab915dad4f4da30af664023f5c43798482fc3cae89efe20ee6fde7787545c905a959528f90971a9f5d830e3d4fa03d1c6ab7be0d31971ae07af6118bf26e77ab7a4bb3a087a7487fe5c269d2242fb1335c19c30bcdd547989dffb649dfb9439ba5c4a3e5e553d109157cafac49a3eb715353a1564ce77da7842285b3dc92ba5901ec95fc6530585cfe46feeb6b6ad01342afb500546d108e31999ca9ebbb688d2302366631b6d7b487bed7938aabc8beaa1cde7d2cef5e3cb0167586b3766150e226e48d4ede469ef13bbea1b611f9a8e2d3be2a0562a0040929e1b24237013717e3325f32b690cc234699ecc2dd283c288a9d01c874b18a17acfa895600f4c201e9693927cc7045b46ad3a41ff172be0f7192c052a9b80585b45c8478ef88a85edeff6f01b08686fb7cf7ef15e13a1302dcd98d1b8b3177a5cee91aad6f936ade5b51302e866d7cb39a04bccfd2046db25501c04988f7ca18f476467e8010ff0303e4ffe0840504b3f2e47b924ce45227358057e936a3b05676e903f2ac1aa8fd991801c3b8b22b2105ecab0fbc29b9dca164d4fbaecb40ae1e89d87266302e17104e11b8b167cc07fa1479d9ece2071184f9b4f14d5f108abe2059470a9ab8c1ea230c6d18e44e7d175560df47f6f5eb23d06790a49d12c7fc128348c702ce1a02b43ea86b76bb90d02fa0a964fd9156d1263f72d49d30ed5453ea2e3a1d373b61a351828b64cb7071fc975a1ba07dc810a493c03796deb64066336fd78f16933f72a710d30e8360eedb706f83eea6fe1dac1c7351fe1628112454d13e6d014da807351fa74cb87ce507fe0eaa06bc6df9db7b371d4cbe7e5c11106fddf8d07341830bcfe96c67e31d932274e59343b139a91a1ee80bdc2c4e73ef1e953059a9ff2d97293630aba08b6151970020096c491af3999a03c5f709a511ca6c29df9ac1acac9036b89df1bc93c6045e88fb2fa8ebf7f72fafde27225ccc5ce019d3f0751f3bdd4775510a19ab2b56da0ec0e47c2a6210fb6ddcece6668d24efa245bcb23ce15463804b83d22d2e9328f7831e7fe4a14c8c498e89c02500e0caedaf6355c96b4643136293ce4b6b36bc7b51b6031de5852a2a09288138037d6250af08be210ea62be197dd2794bad00c64d8cb47b1f85ee2bc34646bccb08a51afe1514c37439c5dc2aeae088083db86627232c0c12d3330905b33b0b23f6d916ada56cad52122ed680e770079840c351dc1694dae07e40806b2663d20b7dd0054facb5907329c011d26642c81aee3dc0fb25a281c24a010542ab5e9197b295aff9c95e3fc156f1d97a219e0d7465677586eb2bb9c8bf19b63dc1e42863799e64d324db6586bee242c029d43e411bfa5b3fa83df3c7624685f90e61efc6ba822e174623028646330475712c1e0542512aec8c3218aa4ebb8e8d5194d17e5950445f063cf7da958ddbbc33984e69680ab0894346225e224d3c421a000ab5226ee2cebb63f538573fc11088fe9ffc7265f95d09f030aaf7fba16be7ec2ef78613c8d80fcec270e3dd4cbb9f36ffef88edf31925906db216ccb15f162d0ab9ecdbcf3e6e2b035310a66949bc5130ea3de9ccb68e116ec0c8cda0e60e497ae9fc937b402f141ab70772e52ca62378e75d86b399c3510cdb5dc2dd8f2511bf2f3f4c600b42b2b199c18e740865cb254d0c1d79ce80b86074d3019388b0c9a26158b6219a6cc3400ffbff7b74c5f131de65d763c931263ac19a9ba91e6b490b37492424fa60d284e74b98c65f3c1a18fb1450cefa0e21b88e4a14844b2f37c90bfb6b28d86b7ff89c1f121e7e2a3a7e3e4d47d0c81e7599e4043d8cbd7a60edc31a7587cdbf61591e698edd8bb0e3e5d882efab4ddebc1f1be93bf124304e52f298fdbd55585a9a5f2f50c1a8113801408904fa2b908f397abfede22fb434234ddb3567de2514e4066b41efeadc4a78ad8ec4c0df421ca60a293335eb92cba4cf3f68fe1d61dd63dfa2a4d9c7285784016a9831431aa399f2d4ebfc3e931484ae252f0f64aa175b744308c89580694613963b0be900ebe8c6bf04bc2d24d62e64c001557ffcd11ac099834d94d8820a2715bd51f6c06d85ad166a611ee012a189069cc3b740883d8fbd1c2b6accfef2461afb484a86a252804a04229b0c1e13529c161b4b62877a64f9421b26b2686d0b94aca3391738a841b9056a6d4cc216d8c69c0d5a0a6bdc6970e4a7d00f7b38e153f43a5b3659903ccd6f5e8d3e01f56076458f3adb97df5405cea09ba2cad018a93c71150e8415e74b3c951e1cd877241eefa0295afdbebc108064a2837f9f6bae3ec8e60e3476169e71242778c99a7c397ee8d2040be6ee2d071732214ff510de8508a0b7af92b48226acc64157702b0e27dee1778f1c1d035596d0f7fbde2195467cf7cc9d2ec0e56746894353ae9fbf6eedd16ca8bcdc0620b247b3857cee2fe9c9f64e59c306a7cf1aed94896359cd9bf095ccd881f4fbb47e7c7d5c4329c01db04b646c45d68f86094d26b0afcb908d9308d91dee0b78c7b45ea1ae1a8a1e79ccee841862201a41dd7291f6c7d129489be0bb920255d85f2ecc81a811813b099bc465e50d5d90800e5e2503e41ecc1174368efeefcb13236cec47931d0b915fc1fb206998cb76d00c93a93a48103707bff272d4efc8a7af562e1aa27edb925c672d45403d16cf42bbbc37edc0699e80ea2555b411d0844208897e9fa22d091f77f0ca5480ce1187e789545ec96289c7e55a3526b0a44f15b0e9d9b7cc7611069031dda650d895f785a9ab52493bdcbffc2365a7a2a803930c365f40e452564aeab0408fc7a23be9fc55d2453cff7faed1e5e85b6288e150d394be4baf3ca39a79823712921f9159b08564082164ea0ed69cfcd1124744cc1148d85518ae0cf7ac7027a68040ec5ff259af22a216c18e68da14616e84a71eb1104db35ce37e0cb5af7509c7321aef87d1786c8b4ed437b2f158d032a10e0e67788068f70a718a8119f71ce7eb54fdb771ebfc1d608245ad4ab9e8c6c9542e3ed4eff1c4b2861121a8bb0a810d0bb5f1c54aa975f3a31b8cd858c22c0475c7c60dfce5bd974996f59c80f4f0bca3a13323e42f2a1163c0eb1ce546f8c4416fd3594b0151453409ac5bfad1ee0f7401d69e4df5e5e8da493d58236b7acc37407c2c3d4fc922e495a51f86cbad3683cfb8655ba59975a9b41b2cc627e4a78be635d8426a083fe6950bd182d49d758c9c2211e46e151d5d4edea08365e4cd4af4a60db7738b7a823fd60615c0b13a43b277837819457bd067fa43ef53a4e05672e37b8594a83f014bf9b6c5af7315940bb2bb14e1d53fa61ae2d703f64120bca765f95e6f51bb1f54e3121390be4f71013b932be37f7593eb5b9981d88cc026f0106b0a64adac260cc2fbbbcab7a2bc6b24c5e3274f4a74ee4f04923bc5db9a21030dd47e124d886c62486d6934e2e5b5bd3cc3d65e5ab84ae5803faf100da640becaf16aa8b7e9cdacb05862662c37b42d628627ce6fffed76fb2d8f02dc6f8819052c627fd452be95e2d1bcd74ed7fd289a5fe3cdc1e23adadeb1406328bf78432fcca158c487e76f974a67463486cc419042ddc4556c49f09dc2159eec3af4352a6dd9698d0da26f626257675aa065b637af861b6795cacdf264c30ecc57eb4e5cf08c68361820072d022e10d3b7a15481a0a49c4cd1479b1b4bc7b49c82d224f729b063fa26e2e2cf8cee60108effecaba7e631e705d69a2bf75b049a56c35d67d10169141d854d109678580e2365a8514783e4009f9223bae8f1bd578add4c6b3a25420f8f78dd45bd4780626b23135c7ca6ff566c22019b045eeb3a0665d9dfdd38f258e395170336609ec79b22b7757c8e3c07d2b61acac7f74dcd7c153acfa637549bb53e27b32eda62a8d5976ff78c533203fce4c108a0fd4822544435907aebd027ed4a4a2e79927914b3a7b2f0cad1a978fc58202ab40664e4acdfc6f5c961ffa65ac86b29be80f1ac87d540d699e000966282e21597e4625be944c8eb437902691f874facede45f27d6ae74b93934eee5a48d55df3b65d79283c1e3dd8c78e1de9bb5518e3ec54b45b682413e1db086e8af99d66f487fbc6661024e01a5ab8d3df637387c83d2563fcd3d2fb061cc13c7557b702df9ebf29c12d8687c332e97732b51482bcf0cdbf2f3b14abb6422e5d89b7a5be2d168e400a74aa599ca9c831055da56bb80c304bc5adf675b3c4be530317b65e353d18e3d165293121849af3cc0f4ddda3885a51b9238a88f54473a170455ebbf58eb238c12405e8d321252fe9d6f50356d84805311e67e6fe37bf123e30fe34ae10579131b721258c8e0008e24fb8d30732cfafa30c57ca0f53df4c3f7b442f7c12ee3a7df5b94031efbb52d051864f799ae20a43d7c685a380ddcb032caba6295d20cc6863c946f55c2d13715b87d2b666efa646a5df7705eafc5422b75dafbae2f9e6136a14fd74c86c2f62cb276ac666f0a2252ca8e3ff9e529cef258664853736d4d9e02d8b4db2987646184f2b264667c347812cc68e931649702a51f3ae5d309eed768574d3fe77354e6bb7ddeb45cf4048727ef1fb1eae4fca87d0fdd2b6a596f0424ff2437844aa1343e2f8e55d83322124e768bbe41a58685e42ca6f868c0a270182fdffa0d939cbafe7d61e7ad797f32544c00ab79492301a4cc3bb3b9f9bc34706bcb8b69435523c31162937287d19cdc1580cf497a52dc5e909ae7251d5bfd0539460767df3a29fc7560d020c3c1b46fe9d454359a4e8190935d46399bcb1afc816f038ce73b92f8c4e1988c53f30dcdd5c2963c7ff57cc602869132ea06c1dff65fc7aea6447be6c88f36b2770a0e1c6f7ad2e1dd82e0e547a23141844552b8b9079f7af81f919812e0d0211828da18a0a6a58574f2d27093aa9bd70dfb9b01da93b21fb95707fa22516e23c7bf1c129504f966ce5229ed385d77d7027e747f00b517fd646693cc1e20aebcd99a665d1ead06008fdb19a424dc3407f455e92c5bc7c87691138f21bb39fd1c292be7a249ec0db12d6232353c6d0a19f8f79930658bfddfd166e44fc7746f205f97773dee2ec2e83573e9d3cf9f65279b2f301273d1987d5ea800150485bd53ae3af4cdb038361e276f455373569e4a946ad6ccd9acfaee487a491dbd51c068013fe9d986cabbf289bfec5694849a58abc667aac89bc92b48b3981da8fa3a12066fc755da888f9618a9758030f2d18bf85314f552951c1dbe504584ce872d1af786f994e9b963bb6fdc2891f7f2e1b04fdb36e2957279a8872179d03820be940775ac9d74d2097f613e89175b386084bbfcb41a0f124abc2c7a69697950c70df178b92bd02b82e41ed4a9a2b3b0f29c83d640d032950e50aef53c4816a87e736e1165a951ce26cc6391dbf6889386380b0c3bb96dc49abe4c59c9de4e668c94879c9bdc1324d06a2f66d4a979809f96d3c12369040018e4dbaed21a100b5f94ebe3fd1</script>
   <div class="hbe hbe-content">
     <div class="hbe hbe-input hbe-input-default">
       <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
@@ -202,63 +314,258 @@
     </div>
   </div>
 </div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/225142153" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">milkmoli</div><div class="author-info-description">这里是茉莉的小站！</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/milkmoli"><i class="fab fa-github"></i><span>Github</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://x.com/" target="_blank" title="Twitter"><i class="fab fa-twitter" style="color: #1da1f2;"></i></a><a class="social-icon" href="https://space.bilibili.com/1736355700" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #FB7299;"></i></a><a class="social-icon" href="https://youtube.com" target="_blank" title="youtube"><i class="fab fa-youtube" style="color: #FF0000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" title="帖子模板"><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/2026.6/6.2-1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="帖子模板"/></a><div class="content"><a class="title" href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" title="帖子模板">帖子模板</a><time datetime="2026-06-01T16:00:00.000Z" title="发表于 2026-06-02 00:00:00">2026-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/02/%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC/" title="油猴脚本分享"><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="油猴脚本分享"/></a><div class="content"><a class="title" href="/2026/06/02/%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC/" title="油猴脚本分享">油猴脚本分享</a><time datetime="2026-06-01T16:00:00.000Z" title="发表于 2026-06-02 00:00:00">2026-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" title="如何使用hexo-butterfly-swiper-x"><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/2026.6/6.1-1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何使用hexo-butterfly-swiper-x"/></a><div class="content"><a class="title" href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" title="如何使用hexo-butterfly-swiper-x">如何使用hexo-butterfly-swiper-x</a><time datetime="2026-05-31T16:00:00.000Z" title="发表于 2026-06-01 00:00:00">2026-06-01</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            
-          </div>
-          <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%99%E7%A8%8B/"><span class="card-category-list-name">教程</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB/"><span class="card-category-list-name">资源分享</span><span class="card-category-list-count">1</span></a></li>
-          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Hexo/" style="font-size: 1.3em; color: rgb(50, 171, 186);">Hexo</a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.45em; color: rgb(50, 178, 50);">教程</a><a href="/tags/%E6%95%88%E7%8E%87/" style="font-size: 1.15em; color: rgb(187, 50, 73);">效率</a><a href="/tags/%E8%84%9A%E6%9C%AC/" style="font-size: 1.15em; color: rgb(186, 79, 149);">脚本</a></div></div><div class="card-widget card-archives">
-    <div class="item-headline">
-      <i class="fas fa-archive"></i>
-      <span>归档</span>
-      
-    </div>
+<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
+<script data-swup-reload-script type="module">
+import {initHBE} from "/js/plugins/hbe.js";
+  log.info(ensurePrefix("hexo-blog-encrypt: loaded."));
+    initHBE();
+</script>
+
+	</div>
+
+	<div class="page-template-comments">
+		
+	</div>
+</div>
+
+<div class="paginator">
+	
+</div>
   
-    <ul class="card-archive-list">
-      
-        <li class="card-archive-list-item">
-          <a class="card-archive-list-link" href="/archives/2026/06/">
-            <span class="card-archive-list-date">
-              六月 2026
-            </span>
-            <span class="card-archive-list-count">4</span>
-          </a>
-        </li>
-      
-        <li class="card-archive-list-item">
-          <a class="card-archive-list-link" href="/archives/2025/11/">
-            <span class="card-archive-list-date">
-              十一月 2025
-            </span>
-            <span class="card-archive-list-count">1</span>
-          </a>
-        </li>
-      
-    </ul>
-  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">5</div></div><div class="webinfo-item"><div class="item-name">运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2025-07-20T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-06-02T09:42:13.439Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By milkmoli</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.4/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.2"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
-  function butterfly_swiper_x_injector_config(){
-    var parent_div_git = document.getElementById('recent-posts');
-    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="/2025/11/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" alt=""><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg" loading="lazy" alt="" onerror="this.src=https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-11-16</span><a class="blog-slider__title" href="/2025/11/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" alt="">我的第一篇文章</a><div class="blog-slider__text">这是我的第一篇帖子</div><a class="blog-slider__button" href="/2025/11/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" alt="">详情</a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" alt=""><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/2026.6/6.2-1.jpg" loading="lazy" alt="" onerror="this.src=https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2026-06-02</span><a class="blog-slider__title" href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" alt="">帖子模板</a><div class="blog-slider__text">为博客的帖子制作模板</div><a class="blog-slider__button" href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" alt="">详情</a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" alt=""><img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/2026.6/6.1-1.png" loading="lazy" alt="" onerror="this.src=https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/bg.jpg; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2026-06-01</span><a class="blog-slider__title" href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" alt="">如何使用hexo-butterfly-swiper-x</a><div class="blog-slider__text">这是一篇教你如何使用hexo-butterfly-swiper-x的帖子</div><a class="blog-slider__button" href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" alt="">详情</a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
-    console.log('已挂载butterfly_swiper_x')
-    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
-  }
-  var elist = 'undefined'.split(',');
-  var cpage = location.pathname;
-  var epage = '/';
-  var flag = 0;
+			</div>
 
-  for (var i=0;i<elist.length;i++){
-    if (cpage.includes(elist[i])){
-      flag++;
-    }
-  }
+			
+		</div>
 
-  if ((epage === 'all') && (flag == 0)){
-    butterfly_swiper_x_injector_config();
-  }
-  else if (epage === cpage){
-    butterfly_swiper_x_injector_config();
-  }
-  </script><script defer src="https://cdn.jsdelivr.net/npm/hexo-butterfly-swiper-x/lib/swiper.min.js"></script><script defer data-pjax src="https://cdn.jsdelivr.net/npm/hexo-butterfly-swiper-x/lib/swiper_init.js"></script><!-- hexo injector body_end end --></body></html>
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">The Redefine Team</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 5 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
+</script>
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>
