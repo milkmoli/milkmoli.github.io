@@ -78,7 +78,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://milkmoli.github.io/tags/hexo/"/>
+    <link rel="canonical" href="https://milkmoli.github.io/@encrypted/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -88,11 +88,13 @@
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="茉莉的小站">
-<meta property="og:url" content="https://milkmoli.github.io/tags/Hexo/index.html">
+<meta property="og:url" content="https://milkmoli.github.io/@encrypted/index.html">
 <meta property="og:site_name" content="茉莉的小站">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://milkmoli.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2026-06-03T10:14:45.012Z">
+<meta property="article:modified_time" content="2026-06-03T10:14:45.012Z">
 <meta property="article:author" content="milkmoli">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://milkmoli.github.io/images/redefine-og.webp">
@@ -107,7 +109,7 @@
     
     <title>
         
-            标签: Hexo | milkmoli&#39;s Blog
+            milkmoli&#39;s Blog - Redefine Your Hexo Journey.
         
     </title>
 
@@ -395,77 +397,312 @@
 	
 
 	
-	<div class="tag-name">
-    <i class="fa-solid fa-tag"></i>&nbsp;Hexo
-</div>
-<div class="tag-post-list">
-    
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2026</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">2</span>
-            </div>
-            
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-                
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='06-02'>
-                    
-                    <a href="/2026/06/02/%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%9D%BF/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">帖子模板</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='06-01'>
-                    
-                    <a href="/2026/06/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8hexo-butterfly-swiper-x/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">如何使用hexo-butterfly-swiper-x</span>
-                    </a>
-                    
-                
-                </li> <!-- Ensure the last item is properly closed -->
-            </ul>
-        </section>
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2025</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
-            </div>
-            
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-                
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='11-16'>
-                    
-                    <a href="/2025/11/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">我的第一篇文章</span>
-                    </a>
-                    
-                
-                </li> <!-- Ensure the last item is properly closed -->
-            </ul>
-        </section>
-    
-</div>
-</div>
-	
 
 	<div class="page-template-content markdown-body">
 		
+		<h1></h1>
+		
 
 		
+<style>
+    .auth-root {
+        display: flex;
+        justify-content: center;
+        margin: 4rem 0;
+    }
+
+    .auth-wrapper {
+        background: white;
+        height: 280px;
+        width: 450px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 1px 1px 10px gray;
+        border-radius: 15px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .auth-wrapper {
+            background: #2e2e34;
+            box-shadow: 1px 1px 10px #494949;
+        }
+    }
+
+    .makeElementMiddle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3D(-50%, -50%, 0)
+    }
+
+    .authBox input {
+        display: block;
+        width: 300px;
+        height: 40px;
+        outline: none;
+        border: none;
+        border-radius: 1px
+    }
+
+    .hexo-auth-string {
+        transition: 1s;
+    }
+
+    .hexo-auth-string.red {
+        animation: shake .3s ease-in-out;
+    }
+
+    @keyframes shake {
+        0% {
+            transform: translateX(0);
+        }
+
+        12% {
+            transform: translateX(-1rem);
+        }
+
+        36% {
+            transform: translateX(1rem);
+        }
+
+        50% {
+            transform: translateX(0);
+        }
+
+        62% {
+            transform: translateX(-1rem);
+        }
+
+        86% {
+            transform: translateX(1rem);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+
+    .input input {
+        text-indent: 1em;
+        font-size: .8em
+    }
+
+    .btn {
+        margin-top: 20px
+    }
+
+    .greenBtn {
+        margin: 7px 0;
+        color: white;
+        opacity: .8;
+        border-radius: 2px;
+        cursor: pointer
+    }
+
+    .greenBtn {
+        background: #23ad4f
+    }
+
+    .btn input:hover {
+        opacity: 1
+    }
+
+    .auth-root h1.article-title {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        top: -1rem;
+        height: 2rem;
+        color: #696969;
+        margin-left: 0;
+        font-weight: 300;
+        line-height: 35px;
+        margin-bottom: 20px;
+        font-size: 26px;
+        transition: color .3s;
+        margin-bottom: 10px;
+    }
+
+
+    .HEP-SVG {
+        width: 200px;
+        height: 200px;
+        margin: 2.5rem auto;
+    }
+
+    .HEP-SVG.unlock-icon {
+        display: none;
+    }
+
+    .HEP-SVG.lock-icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: .3rem;
+    }
+
+    .HEP-SVG path,
+    .HEP-SVG circle,
+    .HEP-SVG rect {
+        stroke: #23ad4f;
+        stroke-width: 1;
+        stroke-linecap: round;
+        fill: none;
+        stroke-dasharray: 70;
+    }
+
+    .HEP-SVG.lock-icon path,
+    .HEP-SVG.lock-icon circle,
+    .HEP-SVG.lock-icon rect {
+        stroke: darkgray;
+    }
+
+    .HEP-SVG.unlock-icon path,
+    .HEP-SVG.unlock-icon circle,
+    .HEP-SVG.unlock-icon rect {
+        stroke-dashoffset: 70;
+        animation: unlock 1s ease-in-out forwards;
+    }
+
+    @keyframes unlock {
+        0% {
+            stroke-dashoffset: 70;
+        }
+
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+</style>
+
+<div class="auth-root" title="36b12_Y6f39w_7ea1je">
+    <div class="auth-wrapper">
+        <div class="authBox makeElementMiddle">
+            <div class="makeElementMiddle">
+                <h1 class="article-title">
+                    <svg class="HEP-SVG lock-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                            <circle cx="12" cy="16" r="1"></circle>
+                            <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                        </g>
+                    </svg>
+                    内容已上锁
+                </h1>
+                <div class="input">
+                    <input class="hexo-auth-string" type="password" placeholder="输入解锁码"/>
+                </div>
+                <div class="btn">
+                    <input class="greenBtn" type="button" value="解锁" onclick="unlock_36b12_Y6f39w_7ea1je(event)" />
+                </div>
+            </div>
+        </div>
+        <svg class="HEP-SVG unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                <circle cx="12" cy="16" r="1"></circle>
+                <path d="M8 11V6a4 4 0 0 1 8 0"></path>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<script>
+
+    async function unlock_36b12_Y6f39w_7ea1je(event) {
+
+        function errorHint(passwordInput, msg) {
+            passwordInput.classList.add('red')
+            passwordInput.value = ''
+            passwordInput.placeholder = msg
+            setTimeout(() => {
+                passwordInput.classList.remove('red')
+            }, 1000)
+        }
+
+        const target = event.target
+        const root = target.parentElement.parentElement.parentElement.parentElement.parentElement
+
+        const passwordInput = root.querySelector('.hexo-auth-string')
+        if (!passwordInput || !passwordInput.value) return
+        const password = passwordInput.value
+        let content = ''
+        let isMatch = false
+
+        let titleElement = root.nextElementSibling.nextElementSibling
+        let _title = ''
+        try {
+            let keys = await fetch('/@encrypted/encrypted.json')
+            let ivs = await fetch('/@encrypted/encrypted2.json')
+            if (!titleElement) throw new Error('找不到容器 Abort')
+            content = titleElement.textContent.trim()
+            _title = titleElement.getAttribute('title')
+            if (!content || !_title) throw new Error('找不到加密数据或者标题 Abort')
+            keys = await keys.json()
+            ivs = await ivs.json()
+            let _key = keys[_title]
+            let _iv = ivs[_title]
+            if (!_key || !_iv) throw new Error('找不到盐 Abort')
+            _key = (password + _key).slice(0, 32)
+            _iv = (_iv + password).split("").reverse().join("").slice(0, 16)
+            let authString = aesjs.utils.utf8.toBytes(_key)
+            const iv = aesjs.utils.utf8.toBytes(_iv)
+            const aesCbc = new aesjs.ModeOfOperation.cbc(authString, iv)
+            const encryptedBytes = aesjs.utils.hex.toBytes(content)
+            const decryptedBytes = aesCbc.decrypt(encryptedBytes)
+            const value = aesjs.utils.utf8.fromBytes(decryptedBytes)
+            content = value.trim()
+            authString = new TextDecoder().decode(authString)
+            if (content && content.slice(0, 32) === authString) {
+                content = content.slice(32)
+                titleElement.innerHTML = content
+                isMatch = true
+            }
+        } catch (e) {
+            console.error(e)
+            errorHint(passwordInput, '无法获取数据，请尝试[$: hexo clean & hexo g]')
+            throw e
+        }
+
+
+        if (isMatch) {
+            root.querySelector('.makeElementMiddle').remove()
+            const icon = root.querySelector('svg.unlock-icon')
+            icon.style.display = 'block'
+            setTimeout(() => {
+                root.remove()
+                titleElement.style.display = 'block'
+            }, 1000)
+            localStorage.setItem(_title, password)
+        } else {
+            errorHint(passwordInput, '解锁码不正确')
+        }
+    }
+
+    (function () {
+        const root = document.querySelector('.auth-root[title="36b12_Y6f39w_7ea1je"]')
+        if (!root) throw new Error('无法找到Auth Root')
+        const passwordInput = root.querySelector('.hexo-auth-string')
+
+        const _i = setInterval(() => {
+            let titleElement = root.nextElementSibling.nextElementSibling
+            if (titleElement) {
+                clearInterval(_i)
+                const _title = titleElement.getAttribute('title')
+                const password = localStorage.getItem(_title)
+                if (password) {
+                    passwordInput.value = password
+                    const btn = root.querySelector('.btn input')
+                    if (btn) btn.click()
+                }
+            }
+        })
+    })()
+</script>
+
 	</div>
 
 	<div class="page-template-comments">
@@ -474,7 +711,7 @@
 </div>
 
 <div class="paginator">
-	<span class="page-number current">1</span>
+	
 </div>
   
 			</div>
