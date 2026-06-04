@@ -171,7 +171,42 @@
     
     
     
-<meta name="generator" content="Hexo 8.1.2"></head>
+<!-- hexo injector head_end start -->
+<style>
+.post-encrypt {
+  position: relative;
+  padding: 30px;
+  border-radius: 12px;
+  background: var(--card-bg, #fff);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  margin: 20px 0;
+}
+.encrypt-form { padding: 20px 0; }
+.encrypt-icon { font-size: 48px; margin-bottom: 16px; }
+.encrypt-form h3 { font-size: 1.4rem; margin: 10px 0; color: var(--text-color, #333); }
+.encrypt-form p { color: var(--text-secondary, #666); margin-bottom: 20px; }
+.encrypt-input-group { display: flex; gap: 10px; max-width: 400px; margin: 0 auto; }
+.encrypt-pwd-input {
+  flex: 1; padding: 10px 16px; border: 2px solid var(--border-color, #ddd);
+  border-radius: 8px; font-size: 1rem; outline: none;
+  background: var(--input-bg, #f9f9f9); color: var(--text-color, #333);
+}
+.encrypt-pwd-input:focus { border-color: #3b82f6; }
+.encrypt-pwd-btn {
+  padding: 10px 24px; background: #3b82f6; color: #fff;
+  border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; white-space: nowrap;
+}
+.encrypt-pwd-btn:hover { background: #2563eb; }
+.encrypt-error { margin-top: 12px; font-size: 0.9rem; }
+@media (max-width: 768px) {
+  .encrypt-input-group { flex-direction: column; }
+  .encrypt-pwd-btn { width: 100%; }
+}
+[data-theme="dark"] .post-encrypt { background: var(--card-bg, #1e1e2e); }
+[data-theme="dark"] .encrypt-pwd-input { background: var(--input-bg, #1a1a2e); border-color: var(--border-color, #333); }
+</style>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -494,12 +529,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>21 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>645 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>1 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 分钟</span>
         </span>
     
     
@@ -518,25 +553,308 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			
-<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <script id="hbeData" type="hbeData" data-hmacdigest="c4b0893504aab76cdd5233ebd9bbdcadfb83278da623ae9b3d5be9c6ad9d7db0">7204a4f702f38050cae3f6d5244ffa982fe5f0e399ff2646bc2efc379014c0f3074e691dde2d4245cdd6129dade6caa70e109c8276a309db7f729df38c855ac35ed233cd5f553002e6cccecdbd63d67e39ce40964deaa13961c6d4592fe2767a64782b25164e3be29bbb34f69c11355e2fe4ee83ec5909963ce68128eb855256a614708916164b5eadc6d654d577bc8bc658ff42c6cbafb2b91869396ce140ebbd66d6c80aa90aa0ef71769bd030e604db691cf9fc27cef6cb926bad409b1f5b5fd202c0e3d2f33071e1ba807b1a3d706ca2d5d3d3fd24e9e7d1dddaf1d941dbbaa993470c885381f35a02d77c1d16ce381226cdc222ba40f53527b8570f0f503287557b700f5e649e47d66e5b9ac959895f4b2ba777d62bc666b7658091d877e4bd03e1be763db50235ec4c842e79d7cbca4816684a9e80ede7e6cb5f00ca2841f6a1f3939092a9c4bf7b5debd0a081e6155e88857e60ad8e23299f99c304667e02a2960ac0692c8a60319686adcdd0c32e7246d1795568e0886a99a1e5d6ab9c3fddf6fdac88eba4dc33932ea4f7e595af189744d2865b758ac300cf973438127b037d91947a30de61570fdf158c1ac7130a0ea9e794ce09a081011f33850c278e35b9767e71a825fb43cf8501f770afbacdc13c10aaedf66822e7a1049bf4bcc7db30e4a01dca4ea8cb27c22123e14b5578201c436f9cf3adc153cb27412259c68ac06610f41ef0d13b21b2316a14a8eb198372152da4d4b1250685bddf241abb400a8fe8e5b105c21b631cd04c506e599f0d2885d31146652bd775336a860c8252751f7ada3c838b23a43d42bd750ea6dbb8d0719ac30301194b1e8447c002130c1e9c23c07601acb69d75db577d6d5585e1cfe4677ee0d16e77c6dd71167a0d6f37f67fa73db7084ddd137b8cec8a055dfdab980680719fe48e360c33f5097e9630de12fde3b9d2d4e506e0d4bc7ee9f366bd931f5d07fcd8653bdb6bda11085e911f4111190c8e0309cd53b2c885d178b46fd12cc237240cb70b07dcecdb494a68347a58e79efc251b0e18c65beb1b6c1232b896d0edc0b7471b7cd650623a69e8d3a4eecf58c672498fe29b137658f36c57f163f8ee51560b9c6333dc3750384895ea94fb924a393ea0d2faa487005bf398238b1310e5ce491b8e0a0341d22803968f33e61c2b2a3525df77e61e15f88e8d1f71c5a1c7d5d3397ba4e9ab3e1247fa909a2a3a0fb12184a9047a388f67ae503b69227e0c652dad48caedc7e26dba089688450613bb6064a1b39e8e90354716b573c9dd9fe37a59ab2fb7119757bec422ca14bc3ef21be29642486b025835dba2aa458e4e2c855fc4a84662f2c949035e26344ec16364b353db1cc0f90a46501c038cbb5f94ee9305d1380287f6c3316f0a54ce73af81ccd19dbd0f84ece04631a09555a1486e4f62dab85c025bb0285440a7aa8517582b41ecb1899b95fd416ea932f152022451c671e7fb47d60226a49c5a12ab03611f1d0bcb6c050cc34ffc97f587c922bcc722cae2779eb548c5f0dd819198296fd48002255df3c29990abdad6eb663d72cad236da4d416c96c751d255123edd2a6032b9ac1363069f5d732cfd24b368be8875cb824da89a8ddd67fb8b37d2654daff7670dc196b2290af79fb7c0076a95ac95844c94d2334043c939d22e8982c9f3ea609b9bf3c3cbb32fbef1238a93998feab55054f0a3e0c46ef494b2fd5584b9eb87661fd30085a12eff238e6979e928f131e147883c7b90d31b75b6d12c4479e5481912efa21060e81d0bb2709f608df8a7ce7f91680d2f879412ac9f2f750b6fe5abd88a020e4612e09ae66858c7984a111215a83509c2775e4330e3397a53494bcb5ff9ae5c58476eda847bcc9fd3065356979b1d9b8d2daf4cc0a781820a9960af219bc196aefdf9d6a9e798551b5f5c1bbbdb147ca0add0c4be403787d19cdc176fd539446d637688e12f0c6d4be24a071cce50b9195752cc165d05c0c53834d4c43eaa14401940106524c8db8b95b84b659abaa26c5eb893e79592ec6b19f34198e0a07cbab019778cf2bd3909bcd7e05bf7e05c2856a39272ac4bd6247c8a010097fcc9042d37df7de0b63ca3f7418a</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
-      </label>
-    </div>
-  </div>
-</div>
-<link href="/css/hbe.style.css" rel="stylesheet" type="text/css"><script data-swup-reload-script type="module" src="/js/plugins/hbe.js"></script>
-<script data-swup-reload-script type="module">
-import {initHBE} from "/js/plugins/hbe.js";
-  log.info(ensurePrefix("hexo-blog-encrypt: loaded."));
-    initHBE();
-</script>
+			<script src="/@encrypted/aes.js"></script>
+<style>
+    .auth-root {
+        display: flex;
+        justify-content: center;
+        margin: 4rem 0;
+    }
 
+    .auth-wrapper {
+        background: white;
+        height: 280px;
+        width: 450px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 1px 1px 10px gray;
+        border-radius: 15px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .auth-wrapper {
+            background: #2e2e34;
+            box-shadow: 1px 1px 10px #494949;
+        }
+    }
+
+    .makeElementMiddle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3D(-50%, -50%, 0)
+    }
+
+    .authBox input {
+        display: block;
+        width: 300px;
+        height: 40px;
+        outline: none;
+        border: none;
+        border-radius: 1px
+    }
+
+    .hexo-auth-string {
+        transition: 1s;
+    }
+
+    .hexo-auth-string.red {
+        animation: shake .3s ease-in-out;
+    }
+
+    @keyframes shake {
+        0% {
+            transform: translateX(0);
+        }
+
+        12% {
+            transform: translateX(-1rem);
+        }
+
+        36% {
+            transform: translateX(1rem);
+        }
+
+        50% {
+            transform: translateX(0);
+        }
+
+        62% {
+            transform: translateX(-1rem);
+        }
+
+        86% {
+            transform: translateX(1rem);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+
+    .input input {
+        text-indent: 1em;
+        font-size: .8em
+    }
+
+    .btn {
+        margin-top: 20px
+    }
+
+    .greenBtn {
+        margin: 7px 0;
+        color: white;
+        opacity: .8;
+        border-radius: 2px;
+        cursor: pointer
+    }
+
+    .greenBtn {
+        background: #23ad4f
+    }
+
+    .btn input:hover {
+        opacity: 1
+    }
+
+    .auth-root h1.article-title {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        top: -1rem;
+        height: 2rem;
+        color: #696969;
+        margin-left: 0;
+        font-weight: 300;
+        line-height: 35px;
+        margin-bottom: 20px;
+        font-size: 26px;
+        transition: color .3s;
+        margin-bottom: 10px;
+    }
+
+
+    .HEP-SVG {
+        width: 200px;
+        height: 200px;
+        margin: 2.5rem auto;
+    }
+
+    .HEP-SVG.unlock-icon {
+        display: none;
+    }
+
+    .HEP-SVG.lock-icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: .3rem;
+    }
+
+    .HEP-SVG path,
+    .HEP-SVG circle,
+    .HEP-SVG rect {
+        stroke: #23ad4f;
+        stroke-width: 1;
+        stroke-linecap: round;
+        fill: none;
+        stroke-dasharray: 70;
+    }
+
+    .HEP-SVG.lock-icon path,
+    .HEP-SVG.lock-icon circle,
+    .HEP-SVG.lock-icon rect {
+        stroke: darkgray;
+    }
+
+    .HEP-SVG.unlock-icon path,
+    .HEP-SVG.unlock-icon circle,
+    .HEP-SVG.unlock-icon rect {
+        stroke-dashoffset: 70;
+        animation: unlock 1s ease-in-out forwards;
+    }
+
+    @keyframes unlock {
+        0% {
+            stroke-dashoffset: 70;
+        }
+
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+</style>
+
+<div class="auth-root" title="46d610_j4VSJf_7ea114">
+    <div class="auth-wrapper">
+        <div class="authBox makeElementMiddle">
+            <div class="makeElementMiddle">
+                <h1 class="article-title">
+                    <svg class="HEP-SVG lock-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                            <circle cx="12" cy="16" r="1"></circle>
+                            <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                        </g>
+                    </svg>
+                    内容已上锁
+                </h1>
+                <div class="input">
+                    <input class="hexo-auth-string" type="password" placeholder="输入解锁码"/>
+                </div>
+                <div class="btn">
+                    <input class="greenBtn" type="button" value="解锁" onclick="unlock_46d610_j4VSJf_7ea114(event)" />
+                </div>
+            </div>
+        </div>
+        <svg class="HEP-SVG unlock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                <circle cx="12" cy="16" r="1"></circle>
+                <path d="M8 11V6a4 4 0 0 1 8 0"></path>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<script>
+
+    async function unlock_46d610_j4VSJf_7ea114(event) {
+
+        function errorHint(passwordInput, msg) {
+            passwordInput.classList.add('red')
+            passwordInput.value = ''
+            passwordInput.placeholder = msg
+            setTimeout(() => {
+                passwordInput.classList.remove('red')
+            }, 1000)
+        }
+
+        const target = event.target
+        const root = target.parentElement.parentElement.parentElement.parentElement.parentElement
+
+        const passwordInput = root.querySelector('.hexo-auth-string')
+        if (!passwordInput || !passwordInput.value) return
+        const password = passwordInput.value
+        let content = ''
+        let isMatch = false
+
+        let titleElement = root.nextElementSibling.nextElementSibling
+        let _title = ''
+        try {
+            let keys = await fetch('/@encrypted/encrypted.json')
+            let ivs = await fetch('/@encrypted/encrypted2.json')
+            if (!titleElement) throw new Error('找不到容器 Abort')
+            content = titleElement.textContent.trim()
+            _title = titleElement.getAttribute('title')
+            if (!content || !_title) throw new Error('找不到加密数据或者标题 Abort')
+            keys = await keys.json()
+            ivs = await ivs.json()
+            let _key = keys[_title]
+            let _iv = ivs[_title]
+            if (!_key || !_iv) throw new Error('找不到盐 Abort')
+            _key = (password + _key).slice(0, 32)
+            _iv = (_iv + password).split("").reverse().join("").slice(0, 16)
+            let authString = aesjs.utils.utf8.toBytes(_key)
+            const iv = aesjs.utils.utf8.toBytes(_iv)
+            const aesCbc = new aesjs.ModeOfOperation.cbc(authString, iv)
+            const encryptedBytes = aesjs.utils.hex.toBytes(content)
+            const decryptedBytes = aesCbc.decrypt(encryptedBytes)
+            const value = aesjs.utils.utf8.fromBytes(decryptedBytes)
+            content = value.trim()
+            authString = new TextDecoder().decode(authString)
+            if (content && content.slice(0, 32) === authString) {
+                content = content.slice(32)
+                titleElement.innerHTML = content
+                isMatch = true
+            }
+        } catch (e) {
+            console.error(e)
+            errorHint(passwordInput, '无法获取数据，请尝试[$: hexo clean & hexo g]')
+            throw e
+        }
+
+
+        if (isMatch) {
+            root.querySelector('.makeElementMiddle').remove()
+            const icon = root.querySelector('svg.unlock-icon')
+            icon.style.display = 'block'
+            setTimeout(() => {
+                root.remove()
+                titleElement.style.display = 'block'
+            }, 1000)
+            localStorage.setItem(_title, password)
+        } else {
+            errorHint(passwordInput, '解锁码不正确')
+        }
+    }
+
+    (function () {
+        const root = document.querySelector('.auth-root[title="46d610_j4VSJf_7ea114"]')
+        if (!root) throw new Error('无法找到Auth Root')
+        const passwordInput = root.querySelector('.hexo-auth-string')
+
+        const _i = setInterval(() => {
+            let titleElement = root.nextElementSibling.nextElementSibling
+            if (titleElement) {
+                clearInterval(_i)
+                const _title = titleElement.getAttribute('title')
+                const password = localStorage.getItem(_title)
+                if (password) {
+                    passwordInput.value = password
+                    const btn = root.querySelector('.btn input')
+                    if (btn) btn.click()
+                }
+            }
+        })
+    })()
+</script>
+<div class="encrypted-plug-div" title="我的第一篇文章" style="display:none">
+    0cd779cfa9a9ff07a90ecf1309537bd50a877611bf494398035d052e69adbe362e805b9708f765dcf1b1627ee1775bc0d70eb61a86caad25a41409b31888c9f3f9b989210f7d6adbe73a4b1e3bec84a15f587e3188ad1b85ed2cc2525ea392a938714bf62a93c17aadef81b45c1c328b72d2225255391e1a67388bb7ec462515
+    </div>
 		</div>
 
 		
@@ -646,7 +964,16 @@ import {initHBE} from "/js/plugins/hbe.js";
 	<div class="post-toc">
 		<div class="toc-title">目录</div>
 		<div class="page-title">我的第一篇文章</div>
-		
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">
+                    
+                        
+                            
+                            
+                            
+                        
+                    
+                    内容已上锁
+                </span></a></li></ol>
 
 	</div>
 </div>
@@ -678,7 +1005,7 @@ import {initHBE} from "/js/plugins/hbe.js";
                     </span>
                     
                         <span>
-                            共 3.5k 字
+                            共 4.1k 字
                         </span>
                     
                 </p>
@@ -943,6 +1270,78 @@ import {initHBE} from "/js/plugins/hbe.js";
 
 
 	
-</body>
+<!-- hexo injector body_end start -->
+<script>
+(function() {
+  var containers = document.querySelectorAll('.post-encrypt');
+  
+  containers.forEach(function(container) {
+    var correctPwd = container.getAttribute('data-password');
+    var contentDiv = container.querySelector('.encrypted-content');
+    var realContent = contentDiv.innerHTML;
+    
+    var formHTML = '<div class="encrypt-form">';
+    formHTML += '<div class="encrypt-icon">🔐</div>';
+    formHTML += '<h3>此内容已加密</h3>';
+    formHTML += '<p>请输入密码查看内容</p>';
+    formHTML += '<div class="encrypt-input-group">';
+    formHTML += '<input type="password" class="encrypt-pwd-input" placeholder="请输入密码..." />';
+    formHTML += '<button class="encrypt-pwd-btn">验证</button>';
+    formHTML += '</div>';
+    formHTML += '<p class="encrypt-error" style="display:none;color:#e53e3e;"></p>';
+    formHTML += '</div>';
+    
+    container.insertAdjacentHTML('afterbegin', formHTML);
+    contentDiv.style.display = 'none';
+    
+    var btn = container.querySelector('.encrypt-pwd-btn');
+    var input = container.querySelector('.encrypt-pwd-input');
+    var errorP = container.querySelector('.encrypt-error');
+    
+    function tryDecrypt() {
+      var pwd = input.value;
+      if (!pwd) {
+        showError('请输入密码');
+        return;
+      }
+      
+      if (pwd !== correctPwd) {
+        showError('密码错误');
+        return;
+      }
+      
+      container.querySelector('.encrypt-form').style.display = 'none';
+      contentDiv.style.display = 'block';
+      
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(contentDiv);
+      }
+      if (typeof hljs !== 'undefined') {
+        contentDiv.querySelectorAll('pre code').forEach(function(b) { hljs.highlightElement(b); });
+      }
+      
+      sessionStorage.setItem('encrypt_' + window.location.pathname, pwd);
+    }
+    
+    function showError(msg) {
+      errorP.textContent = msg;
+      errorP.style.display = 'block';
+      setTimeout(function() { errorP.style.display = 'none'; }, 3000);
+    }
+    
+    btn.addEventListener('click', tryDecrypt);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') tryDecrypt();
+    });
+    
+    var savedPwd = sessionStorage.getItem('encrypt_' + window.location.pathname);
+    if (savedPwd && savedPwd === correctPwd) {
+      container.querySelector('.encrypt-form').style.display = 'none';
+      contentDiv.style.display = 'block';
+    }
+  });
+})();
+</script>
+<!-- hexo injector body_end end --></body>
 
 </html>
