@@ -167,42 +167,7 @@
     
     
     
-<!-- hexo injector head_end start -->
-<style>
-.post-encrypt {
-  position: relative;
-  padding: 30px;
-  border-radius: 12px;
-  background: var(--card-bg, #fff);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  text-align: center;
-  margin: 20px 0;
-}
-.encrypt-form { padding: 20px 0; }
-.encrypt-icon { font-size: 48px; margin-bottom: 16px; }
-.encrypt-form h3 { font-size: 1.4rem; margin: 10px 0; color: var(--text-color, #333); }
-.encrypt-form p { color: var(--text-secondary, #666); margin-bottom: 20px; }
-.encrypt-input-group { display: flex; gap: 10px; max-width: 400px; margin: 0 auto; }
-.encrypt-pwd-input {
-  flex: 1; padding: 10px 16px; border: 2px solid var(--border-color, #ddd);
-  border-radius: 8px; font-size: 1rem; outline: none;
-  background: var(--input-bg, #f9f9f9); color: var(--text-color, #333);
-}
-.encrypt-pwd-input:focus { border-color: #3b82f6; }
-.encrypt-pwd-btn {
-  padding: 10px 24px; background: #3b82f6; color: #fff;
-  border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; white-space: nowrap;
-}
-.encrypt-pwd-btn:hover { background: #2563eb; }
-.encrypt-error { margin-top: 12px; font-size: 0.9rem; }
-@media (max-width: 768px) {
-  .encrypt-input-group { flex-direction: column; }
-  .encrypt-pwd-btn { width: 100%; }
-}
-[data-theme="dark"] .post-encrypt { background: var(--card-bg, #1e1e2e); }
-[data-theme="dark"] .encrypt-pwd-input { background: var(--input-bg, #1a1a2e); border-color: var(--border-color, #333); }
-</style>
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+<meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -1404,78 +1369,6 @@ Sankaku Complex 标签翻译器精简版
 
 
 	
-<!-- hexo injector body_end start -->
-<script>
-(function() {
-  var containers = document.querySelectorAll('.post-encrypt');
-  
-  containers.forEach(function(container) {
-    var correctPwd = container.getAttribute('data-password');
-    var contentDiv = container.querySelector('.encrypted-content');
-    var realContent = contentDiv.innerHTML;
-    
-    var formHTML = '<div class="encrypt-form">';
-    formHTML += '<div class="encrypt-icon">🔐</div>';
-    formHTML += '<h3>此内容已加密</h3>';
-    formHTML += '<p>请输入密码查看内容</p>';
-    formHTML += '<div class="encrypt-input-group">';
-    formHTML += '<input type="password" class="encrypt-pwd-input" placeholder="请输入密码..." />';
-    formHTML += '<button class="encrypt-pwd-btn">验证</button>';
-    formHTML += '</div>';
-    formHTML += '<p class="encrypt-error" style="display:none;color:#e53e3e;"></p>';
-    formHTML += '</div>';
-    
-    container.insertAdjacentHTML('afterbegin', formHTML);
-    contentDiv.style.display = 'none';
-    
-    var btn = container.querySelector('.encrypt-pwd-btn');
-    var input = container.querySelector('.encrypt-pwd-input');
-    var errorP = container.querySelector('.encrypt-error');
-    
-    function tryDecrypt() {
-      var pwd = input.value;
-      if (!pwd) {
-        showError('请输入密码');
-        return;
-      }
-      
-      if (pwd !== correctPwd) {
-        showError('密码错误');
-        return;
-      }
-      
-      container.querySelector('.encrypt-form').style.display = 'none';
-      contentDiv.style.display = 'block';
-      
-      if (typeof renderMathInElement !== 'undefined') {
-        renderMathInElement(contentDiv);
-      }
-      if (typeof hljs !== 'undefined') {
-        contentDiv.querySelectorAll('pre code').forEach(function(b) { hljs.highlightElement(b); });
-      }
-      
-      sessionStorage.setItem('encrypt_' + window.location.pathname, pwd);
-    }
-    
-    function showError(msg) {
-      errorP.textContent = msg;
-      errorP.style.display = 'block';
-      setTimeout(function() { errorP.style.display = 'none'; }, 3000);
-    }
-    
-    btn.addEventListener('click', tryDecrypt);
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') tryDecrypt();
-    });
-    
-    var savedPwd = sessionStorage.getItem('encrypt_' + window.location.pathname);
-    if (savedPwd && savedPwd === correctPwd) {
-      container.querySelector('.encrypt-form').style.display = 'none';
-      contentDiv.style.display = 'block';
-    }
-  });
-})();
-</script>
-<!-- hexo injector body_end end --></body>
+</body>
 
 </html>
