@@ -479,138 +479,380 @@
 
 		
   <style>
-    /*************************************************************************************************************************************************************************************************/
-    #enc_passwd {
-      max-width:500px;
-      margin:4rem auto;
-      padding:2rem 2rem 2.5rem;
-      background:#ffffff;
-      border-radius:16px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.08);
-      text-align:center;
-      font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      transition: all 0.3s ease;
-    }
-    #enc_passwd h4 {
-      margin:0 0 1.2rem;
-      font-size:1.25rem;
-      color:#222;
-    }
-    #enc_passwd .tips {
-      color:#666;
-      margin-bottom:1rem;
-      font-size:0.95rem;
-    }
-    #enc_passwd input {
-      width:85%;
-      padding:12px 15px;
-      border:1px solid #e0e0e0;
-      border-radius:10px;
-      font-size:1rem;
-      outline:0;
-      background:#fff;
-      color:#222;
-    }
-    #enc_passwd input::placeholder {
-      color:#999;
-    }
-    #enc_passwd input:focus {
-      border-color:#409eff;
-      box-shadow:0 0 0 3px rgba(64,158,255,0.15);
-    }
-    #enc_passwd button {
-      margin-top:1rem;
-      padding:11px 24px;
-      background:#409eff;
-      color:#fff;
-      border:none;
-      border-radius:10px;
-      font-size:1rem;
-      cursor:pointer;
-    }
-    #enc_passwd button:hover {
-      background:#338eff;
-    }
-    #enc_err {
-      color:#f56c6c;
-      margin-top:12px;
-      font-size:0.9rem;
-      display:none;
+    .encrypt-container {
+      max-width: 380px;
+      margin: 2rem auto;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* ====================== */
-    /* 你的博客深色模式 .dark */
-    /* ====================== */
-    .dark #enc_passwd {
-      background:#1a1a1a;
-      box-shadow:0 8px 30px rgba(0,0,0,0.3);
+    .input-wrapper {
+      position: relative;
+      border-top: 1px solid #d0d0d0;
+      border-bottom: 2px solid #d0d0d0;
+      padding: 12px 0 6px;
+      margin-bottom: 24px;
+      transition: border-color 0.2s;
     }
-    .dark #enc_passwd h4 {
-      color:#e6e6e6;
+    .input-wrapper.active {
+      border-top-color: #409eff;
+      border-bottom-color: #409eff;
     }
-    .dark #enc_passwd .tips {
-      color:#b0b0b0;
+
+    .input-wrapper input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+      padding: 0;
+      color: #333;
+      height: 2rem;
+      line-height: 2rem;
+      box-sizing: border-box;
     }
-    .dark #enc_passwd input {
-      background:#242424;
-      border-color:#3a3a3a;
-      color:#e6e6e6;
+    .input-wrapper input:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
-    .dark #enc_passwd input::placeholder {
-      color:#777;
+
+    .input-wrapper label {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #aaa;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      transform-origin: left center;
+      white-space: nowrap;
     }
-    .dark #enc_passwd input:focus {
-      border-color:#50b0ff;
-      box-shadow:0 0 0 3px rgba(80,176,255,0.15);
+    .input-wrapper.active label {
+      font-size: 1rem;
+      top: calc(100% + 4px);
+      transform: translateY(0);
+      color: #409eff;
+      font-weight: bold;
     }
-    .dark #enc_err {
-      color:#ff6b6b;
+
+    .decrypt-btn {
+      width: 30%;
+      padding: 10px;
+      background: #409eff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .decrypt-btn:hover:not(:disabled) {
+      background: #338eff;
+    }
+    .decrypt-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      color: #f56c6c;
+      font-size: 0.9rem;
+      margin-top: 8px;
+      min-height: 1.4rem;
+      display: none;
+    }
+    .error-msg.show {
+      display: block;
+    }
+
+    .dark .encrypt-container {
+      background: transparent;
+    }
+    .dark .input-wrapper {
+      border-top-color: #888;
+      border-bottom-color: #888;
+    }
+    .dark .input-wrapper.active {
+      border-top-color: #50b0ff;
+      border-bottom-color: #50b0ff;
+    }
+    .dark .input-wrapper input {
+      color: #e8e8e8;
+    }
+    .dark .input-wrapper label {
+      color: #aaa;
+    }
+    .dark .input-wrapper.active label {
+      color: #50b0ff;
+    }
+    .dark .error-msg {
+      color: #ff6b6b;
+    }
+
+    .re-encrypt-wrapper {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+    .re-encrypt-btn {
+      padding: 8px 24px;
+      background: #909399;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .re-encrypt-btn:hover {
+      background: #7a7d82;
+    }
+    .dark .re-encrypt-btn {
+      background: #5a5d62;
+    }
+    .dark .re-encrypt-btn:hover {
+      background: #4a4d52;
     }
   </style>
 
-  <div id="enc_passwd">
-    <h4></h4>
-    <div class="tips"></div>
-    <input type="password" id="enc_pwd" placeholder="请输入密码" autocomplete="off">
-    <button onclick="unlock()">解锁文章</button>
-    <div id="enc_err">密码不正确，请重新输入</div>
+  <div class="encrypt-container" id="encryptBox">
+    <div class="input-wrapper" id="inputWrapper">
+      <input type="password" id="encPwdInput" placeholder=" " autocomplete="off">
+      <label for="encPwdInput" id="pwdLabel">请输入密码</label>
+    </div>
+    <button class="decrypt-btn" id="unlockBtn">Decrypt</button>
+    <div class="error-msg" id="errorMsg">密码错误</div>
   </div>
 
-  <div id="enc_content" style="display:none;">U2FsdGVkX18z46VcWMUgzIC0IYVMfTAn/0AtKeUhfeFeCEartH9+F9NloRbfbh4OckObRbf43rSiBvIRgMD17UzxRTqcUJ8UuFz73xeinQayoiKvnQazY+yKXs4URXy0Ku0NVCr+1/D4LleMTQgxfbqg0093Ig4ntgWdktxz9HHlXXEA+M6sIEvq28qhYa2uhUiNx8lIQhmi9yplRT4oKoHZuU+iPEpT9uNmaihN3XeXb2lCw7TxqoE4McrVkUiqbkkmDf5x9oO4efFY2QrlkOM7nbheuUxok1/LpIO0qRMqiVnG5uoRCMdycwTSekvZWfSEyVQgltkbdxwkNj71zoXuVx/trlUoe/DdTRj8qWimBDcQGuMOmgw8fH5zoitxlhB07k2axEwSadLBANqasb/Si/HkQ3gbE3d9bDUvzEj33K+g1rmQIfVdOJqdZm5dd+XsdrOOrz68yxIv8DtmCg+a9S+PYd5PTnJSWHBYv2cCHuYC/GrUn3UiCkawQqbZ+HuGlWEHRSWNPehjyHL4x1blWa8E40Wl5yz5sQwMnfOTttP1XioVS75MDZOOo4b6jkYWlwHeeQ/wl7CuZkHY6DU2OkxP69POae5optwIQlZ5SXPEqmApyO7onhE5K8GV5o4hWJslwhhj0TTj+GOe0Fqlyw6aUDVe/JgEutlAtZZPs9c3HbskvklyRCHwqJn1bGImGgDp8RzRi7pVY623JnG5SNBSo96IA7XUrpmV3mjlYdNLainbrdS0ZTDr6nPPyVUO0kBn0OMQzimUhGH/fuhS1bxubduZrRW1X7zlr1X4j+OOIZ+cvq4VWDHoerErcSXbGyo4LmahGMX9d12voke2GRFjfoEbmVTMbPJn8Y3LALa6ZfVX3j3+NGvpefGSO7ocyINdWW2wrdw7r1lcp7xjfzexstDxrQbDe0VmptTMRNN9NnG8ZZSa0dgRJXs7Mx2EaeBga2HwCzDde8TbAOF51chLi5a8JXEuoMq6J4dCvTGZ3FgIh9Z1wqyAXsO3Q3eRpb5o6t9AG7pMi5PzQbH2UHRd9m+AcFfdNQt9JC9uAKyh76nDhFdzVB7F8q3oHAzbM39z6wJd1bcMLY201XYasu5qj9FuKs2ZsEf3L+GUMK5tm0R7SQtWKpbX9d3SMAMEjqvVqBZqamAuinHOmC9ouR1J+8nML6cjIpgWMwWZrF3FzyHiphzI5YQSe3yYbA8/RsupWdi1QeYaZ0198cv25kZKP9pBdk6UwFFmUlfqsLZo+wLx/A6whRo6ZWcOm0Bxh0TWpTDb5HzoTDdH49jPbAyiCpn17SINTZa6wcrwYgHzplSkexBE+sA5b+C5zUnt126zmPS5GrFQ6COdTo2yrwokPt0tITupp82dHPin+SDFUfS5PGF4zZu7kyulr4HIH6/vZjSoJQSt1DQd4AS6wn2bTP59t0NC3Tp3tKyb61W7lLzuDT2BCddrgSixxddu1lqUhJLroYuOgOwSF0KiQbQe6G/PGYA2HOirJdu1Rfv7Pt9R1fpzOdMRCIoY24KYw26icIRHnTBuFHhdGmZKY0CwLbEKyuo/cJrBMLhd0vfmnjwZrRUt7221GpvhLlJBkzrZ+x/pvPba0T6eGmyInh0LperPJg+mSC7TO5T4MlSDsYUmRXJevSY16XKbcayXywDY6ppWUlcWxRO5HgBZyNJdVV5coYb8rz+R63rjeWjkbkkQ2y6dEOqFFGwrsXPQlO1Hv0CSRiO8kj7SfwThzeEUtNcOzHvPdVvW/snIy5kxp6VABlOvb2fj5iQ0m+Wxo4pm7BFfA4+kHAIqxYfCPtlIM/3vb2F4RbtSN+uHcnbq66ZXBuqkYETaapa4CBVQIYxuBoZkssY0ZcnyONYmAQyxT3zix+tPn/Pu7vh22UUUGihL2MR7TETokjEjfdYp1ax0YGdreK96oZq44iW3+x3j5846OfG1XSWja4uo3yqMNFynDTeqHNK3x60BAFP+CJgI4xizb42Im9lC9AAZv/GkOMO5ndcreHvAd5KYpkuNC1fFQcfZdx3IcWaBuQc1QysySi0p+QpyzLZMXkT3kRWeYJ2O5OzjbBqukRQxF4nord7h1/7Gdcxx11wEqqPVYrHT7fX/DsIsxvwrhwGMyCYz5ctm31L/Vj0T6aH1zB3x9O3qhb+Rw6StatQd5uFZ86fPSJRe/13MKyYYdt+9NnBza87Z29JMJJHvqSF72+w6EB7JDBb9UTjzp86RSBFUWQNk3EsgWb6FxpS3pRAsHatZF5N8aatmLgtlIurCyQuXNIdiK8TsYaK6Gsf2IrHYfAiIBcxrdAMZkfaqxxXq+ynL34qdhEQ2aDgGlx8z4cHW8DHp7EqBZ75ARpcZKRGPPHhEJKs7N4usFRSuJrARTH6vdzGqBg1oMBPMzm115i1S66T6usmr0JYLARPyJZeS11tjxtJX/0qCDR0Io5VcJalfSR/1Yeg2pvNjv0CMtM+6En5emy2U3Xp4JKaYmfzxcO6zYUg0mjPT8e+It9GASC9Y3TqAhRfL8MrX9b+9/K06I/se7Etc4kR9u8aeSpI4mEjoZkMpEqRNgTgMf5ux67f3j5nR01o0sbD3pKT6NAj0m41Kt7W75opkwb7fxLtNypP8tUhMYSfIb3A5C8DO5mZhafwm4WzL1lvDCtQgAql6Pk8Xe4Rz1Wy5uAcPMNaiFzAlVGiTGJOKn8PqJcYxIvjE4E58XrNxBc69Teg1iYw1VQHxE5Owi35a3Tw7m59FuDVYZqoebjeVsRkhn3NgfhnSh3Nsr34fOdOy5SQ865HlrS0hvXErPgkRaewvKf3nxiz0t87iJBTBzj//kcoUix8adH0nkqQPv5RxAJt1CBs1FrhLlkTZUjQ4YDl8zIZbOji48HttrDIwzdubPzZ1X6Vrt3Fgh/eh/l63ZmoaP2UjtDesNET2T/D7lTrScLPIEtaRNroSMVYUkgCjp+xTOynI6O1uAK7ipIl9xPwzTi2fGzKcq9dTo2ffxkpZbGQ4rEfBRB4GCaBdOwisbxpwJROTvYFv5ZNWX50e0W5mapYFYqS53D7cGyxwTA9rNg+HTSr5p5K2z65wiYPAFCEbQlLY0zVnshrj6v1LigoFz9KANXZ9q2n1xNdjSx+sdty3QmrnRzHkUwBx4HTtynDI6YcvYnSnb1joos2gbqQJiac2nZhTHufl19PUSBdbP2rsqknuWGGy2FEdDDaDtE9vJpOeHZAaFIeEHkjECc/dG/vOiXZwkyyZun6FcBfRZXXIZ3SkaKxfIoJVOiHLepAE3yCV+5Wpdx9k82ZFNogOasq48bLJzPVG0lo2NV029mJgnqyQkUXlPCWFSdaw34RyUCRMsfKK19NLGemNx8iUzXPwbFKz4VZuCP45MC1d68Tq3133wPXWc29gvMB+I/2V0EaewyIdy82S9Xx8dEh//fZRjUQl3en3IsZVG+B1C+TwbNNl7WY60OD/gDZNhCYK4+c8Fy2bT4gWLanTtvp+SFUOL1Orjx+XkyZQey9/2JjUQM4KQ9HhdzrcaaiUwKNqV4Ajqy6AmbVL6+UjqW/RzmsATRoC+il/RyEMk4SZTzcH1HXo9kB8PFUN+wEEfYK0MCdSYvs3vx6/vJIF3kgVayUjHTMDGIp8u6rIVy6ofStsJsiEq27axSZERH5D4axzkHbF7QdMhXqjdXo3o8GtFqRu8NRI2jaRUF6L9N/ornKvaRj4bQbqtKx7uzVktpbEPJCoy20K9uXNNSPliA4Pq1BQRCmyfJu5OoURpP0SDp6DYLdopg0J2AWffmmASDWekWTF6lA+KcoNyjsXVZK9bpKd7esTHAF2fawl3n+XU3WJLuvOybsicJjKUwAZ3HdRAR8ceD5Bw5GCiP+vZhJcEDckyhyTja7T6msnvtkmHj3duF29Wcprd2u6WokxYZ7X3DfspoV2BPB6XfAamYGc226q77tC2HFpcqsYo9voJI6jVq2rn74GVO8RtIXgNmqMxgOFGNmIlnu/aFrEmMhmk6zopn+HpynoepgNCZxas738oruwV8kUwtwu8D7bTFQBg+xQ+ug84Rv2xA9kWb64IcRDc9EWjdsu0YuQIhW9Cm3wB2fxIdOQS1ES3byMvquEb022j/PWzs8sbke4I/k+NXm7qTzEnmF2wgEfYO8luOtr3yV+/9Fdn66kSzhrulF+35qB29puQX9Fb/yILRKmB5uEUDjEgBmSXfPNlF8EW401qBKHmAVW0+Nn+IAOMv/19H1YW/h+lR0YK7Uf9R7fxBO/EP+/kfWg/RgH1dOo7mEgYgE4Cj1WWCCk4auHJPmxAbEoIoykFxeSkXglGDI=</div>
+  <div id="encryptedData" style="display:none;"
+       data-content="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"
+       data-keys='["U2FsdGVkX18yThQwmzr9SeYm1XXfTGLJa1yVR/6GIzyoLUB/ZcrZ+pE2hDdgrQho"]'
+       data-max-tries="3"
+       data-postid="about/index.html"
+       data-remember="session"
+       data-remember-days="1">
+  </div>
+
+  <div id="decryptedContent" style="display:none;"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
   <script>
-    // 回车解锁
-    document.getElementById('enc_pwd').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        unlock();
+    (function() {
+      var box = document.getElementById('encryptBox');
+      var input = document.getElementById('encPwdInput');
+      var btn = document.getElementById('unlockBtn');
+      var errorMsg = document.getElementById('errorMsg');
+      var wrapper = document.getElementById('inputWrapper');
+      var dataContainer = document.getElementById('encryptedData');
+      var contentContainer = document.getElementById('decryptedContent');
+
+      var cipherContent = dataContainer.dataset.content;
+      var cipherKeys = JSON.parse(dataContainer.dataset.keys);
+      var maxTries = parseInt(dataContainer.dataset.maxTries) || 3;
+      var postId = dataContainer.dataset.postid || '';
+      var remember = dataContainer.dataset.remember;
+      var rememberDays = parseInt(dataContainer.dataset.rememberDays) || 7;
+
+      var tries = 0;
+      var locked = false;
+
+      // ----- 记忆功能辅助函数 -----
+      function getStorage() {
+        // 如果 remember === 'session' 使用 sessionStorage，否则用 localStorage
+        return remember === 'session' ? sessionStorage : localStorage;
       }
-    });
 
-    function unlock(){
-      const pwd = document.getElementById('enc_pwd').value;
-      const cipherText = document.getElementById('enc_content').innerHTML.trim();
+      function getCacheKey() {
+        return 'hexo_encrypt_' + postId;
+      }
 
-      try {
-        const bytes = CryptoJS.AES.decrypt(cipherText, pwd);
-        const plainText = bytes.toString(CryptoJS.enc.Utf8);
+      function loadFromCache() {
+        if (!remember) return false; // 不记忆
+        try {
+          var storage = getStorage();
+          var cached = storage.getItem(getCacheKey());
+          if (!cached) return false;
+          var data = JSON.parse(cached);
+          var now = Date.now();
+          // 检查是否过期（仅当 localStorage 且 rememberDays > 0）
+          if (remember !== 'session' && rememberDays > 0) {
+            if (now - data.timestamp > rememberDays * 24 * 60 * 60 * 1000) {
+              storage.removeItem(getCacheKey());
+              return false;
+            }
+          }
+          // 缓存有效，直接显示
+          showContent(data.content);
+          return true;
+        } catch(e) {
+          return false;
+        }
+      }
 
-        if (!plainText) {
-          document.getElementById('enc_err').style.display = 'block';
+      function saveToCache(plainText) {
+        if (!remember) return;
+        try {
+          var storage = getStorage();
+          var cacheData = {
+            content: plainText,
+            timestamp: Date.now()
+          };
+          storage.setItem(getCacheKey(), JSON.stringify(cacheData));
+        } catch(e) {}
+      }
+
+      function clearCache() {
+        try {
+          var storage = getStorage();
+          storage.removeItem(getCacheKey());
+        } catch(e) {}
+      }
+
+      // ----- 显示内容（并保存缓存） -----
+      function showContent(plainText) {
+        var reEncryptHtml = `
+          <div class="re-encrypt-wrapper">
+            <button class="re-encrypt-btn" onclick="reEncrypt()">加密</button>
+          </div>
+        `;
+        contentContainer.innerHTML = plainText + reEncryptHtml;
+        contentContainer.style.display = 'block';
+        box.style.display = 'none';
+
+        if (window.MathJax && MathJax.typeset) {
+          MathJax.typeset();
+        }
+        // 保存缓存
+        saveToCache(plainText);
+      }
+
+      // ----- 浮动标签控制 -----
+      function updateLabel() {
+        if (input === document.activeElement || input.value.length > 0) {
+          wrapper.classList.add('active');
+        } else {
+          wrapper.classList.remove('active');
+        }
+      }
+
+      input.addEventListener('focus', updateLabel);
+      input.addEventListener('blur', updateLabel);
+      input.addEventListener('input', updateLabel);
+      updateLabel();
+
+      // ----- 错误显示 -----
+      function showError(msg) {
+        errorMsg.textContent = msg || '密码错误';
+        errorMsg.classList.add('show');
+        input.value = '';
+        input.focus();
+      }
+
+      function hideError() {
+        errorMsg.classList.remove('show');
+      }
+      input.addEventListener('input', hideError);
+
+      // ----- 锁定输入 -----
+      function lockInput() {
+        locked = true;
+        input.disabled = true;
+        btn.disabled = true;
+        if (!errorMsg.classList.contains('show')) {
+          showError('密码错误');
+        }
+      }
+
+      // ----- 重置所有状态（用于重新加密） -----
+      function resetEncryptForm() {
+        box.style.display = 'block';
+        contentContainer.style.display = 'none';
+        input.value = '';
+        input.disabled = false;
+        btn.disabled = false;
+        locked = false;
+        tries = 0;
+        hideError();
+        wrapper.classList.remove('active');
+        // 清除缓存
+        clearCache();
+        input.focus();
+      }
+
+      // ----- 解密核心 -----
+      function unlockArticle() {
+        if (locked) return;
+        var pwd = input.value.trim();
+        if (!pwd) {
+          showError('请输入密码');
           return;
         }
 
-        document.getElementById('enc_content').innerHTML = plainText;
-        document.getElementById('enc_passwd').style.display = 'none';
-        document.getElementById('enc_content').style.display = 'block';
-
-        if (window.MathJax) {
-          MathJax.typeset && MathJax.typeset();
+        var randomKey = null;
+        for (var i = 0; i < cipherKeys.length; i++) {
+          try {
+            var decrypted = CryptoJS.AES.decrypt(cipherKeys[i], pwd).toString(CryptoJS.enc.Utf8);
+            if (decrypted && decrypted.length > 0) {
+              randomKey = decrypted;
+              break;
+            }
+          } catch(e) {}
         }
-      }catch(e){
-        document.getElementById('enc_err').style.display = 'block';
+
+        if (!randomKey) {
+          tries++;
+          if (tries >= maxTries) {
+            lockInput();
+          }
+          showError('密码错误');
+          return;
+        }
+
+        try {
+          var plain = CryptoJS.AES.decrypt(cipherContent, randomKey).toString(CryptoJS.enc.Utf8);
+          if (!plain) {
+            throw new Error('解密失败');
+          }
+          showContent(plain);
+        } catch(e) {
+          tries++;
+          if (tries >= maxTries) {
+            lockInput();
+          }
+          showError('密码错误');
+        }
       }
-    }
+
+      // ----- 重新加密（暴露到全局） -----
+      window.reEncrypt = function() {
+        resetEncryptForm();
+      };
+
+      // ----- 回车触发 -----
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          unlockArticle();
+        }
+      });
+
+      btn.addEventListener('click', unlockArticle);
+
+      // ----- 初始化：尝试从缓存加载 -----
+      var loaded = loadFromCache();
+      if (!loaded) {
+        // 无缓存，显示输入框
+        input.focus();
+      }
+      // 暴露解锁函数（以备不时之需）
+      window.unlockArticle = unlockArticle;
+    })();
   </script>
   
 	</div>
