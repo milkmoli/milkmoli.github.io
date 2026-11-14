@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    
+    <meta name="author" content="milkmoli">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2026/11/14/encrypt-plugin-three-pits/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给自己的博客加一道门：我写的加密插件踩了三个坑">
+<meta property="og:url" content="http://example.com/2026/11/14/encrypt-plugin-three-pits/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/redefine-og.webp">
+<meta property="article:published_time" content="2026-11-14T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-14T09:52:02.762Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="加密">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/jasmine.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/jasmine.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/jasmine.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            给自己的博客加一道门：我写的加密插件踩了三个坑 | milkmoli&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":false,"pangu_js":false,"recommendation":{"enable":true,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":"#6C7A89","default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"milkmoli's Blog","subtitle":{"text":["在世界的中心呼喊爱的野兽","世界の中心でアイを叫んだけもの","Take care of yourself."],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":[{"icon":"fa-brands fa-github","url":"https://github.com/"},{"icon":"fa-brands fa-twitter","url":"https://x.com/"},{"icon":"fa-brands fa-bilibili","url":"https://bilibili.com/"},{"icon":null,"url":null},{"icon":"fa-brands fa-telegram","url":null},{"icon":"/images/custom-icon.svg","url":null}],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":null,"show_on_mobile":true,"links":{"tags":{"path":"/tags","icon":"fa-regular fa-tags"},"categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"<i class=\"fa-solid fa-heart fa-beat\" style=\"color: #ff0000; --fa-animation-duration: 0.5s;\"></i>","start":"2025/8/17 12:00:00","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2025/8/17 12:00:00","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/encrypt.css">
+<script>
+(function () {
+  if (window.__hexoEncryptLoader) return;
+  window.__hexoEncryptLoader = true;
+  var files = ["/js/crypto-js.js", "/js/encrypt-client.js"];
+  for (var i = 0; i < files.length; i += 1) {
+    var s = document.createElement("script");
+    s.src = files[i];
+    s.async = false;
+    document.head.appendChild(s);
+  }
+})();
+</script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/jasmine.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                milkmoli&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>标签</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>分类</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			
+			
+			<img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="给自己的博客加一道门：我写的加密插件踩了三个坑" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			
+			<div class="w-full flex items-center absolute bottom-0 justify-start">
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">给自己的博客加一道门：我写的加密插件踩了三个坑</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+				<img src="https://avatars.githubusercontent.com/u/225142153">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">milkmoli</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-11-14 18:00</span>
+        <span class="mobile">2026-11-14 18:00</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-11-14 17:52:02</span>
+            <span class="mobile">2026-11-14 17:52:02</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E6%95%99%E7%A8%8B/">教程</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Hexo/">Hexo</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%8A%A0%E5%AF%86/">加密</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<div class="encrypt-container" id="encryptBox">
+  <div class="input-wrapper" id="inputWrapper">
+    <input type="password" id="encPwdInput" placeholder=" " autocomplete="off" />
+    <label for="encPwdInput" id="pwdLabel">请输入密码</label>
+  </div>
+  <button class="decrypt-btn" id="unlockBtn" type="button">Decrypt</button>
+  <div class="error-msg" id="errorMsg">密码错误</div>
+</div>
+<script type="application/json" id="encryptMeta">{"content":"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","keys":["U2FsdGVkX1+2T4WxNHp5JvzGcF/KO9wtgfWcQPN/cNDsxUmvb8TzdyzB7R27Pn1I"],"maxTries":3,"postId":"2026/11/14/encrypt-plugin-three-pits/","remember":"session","rememberDays":1}</script>
+<div id="decryptedContent" style="display:none"></div>
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 给自己的博客加一道门：我写的加密插件踩了三个坑</li>
+        <li><strong>作者:</strong> milkmoli</li>
+        <li><strong>创建于
+                :</strong> 2026-11-14 18:00:00</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2026-11-14 17:52:02
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://milkmoli.github.io/2026/11/14/encrypt-plugin-three-pits/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Hexo/">#Hexo</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%8A%A0%E5%AF%86/">#加密</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E5%89%8D%E7%AB%AF/">#前端</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+  <div class="recommended-article px-2 sm:px-6 md:px-8">
+   <div class="recommended-desktop">
+    <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+    </div>
+    <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/11/13/ai-took-over-my-site/" title="AI 接管了我的网站" rel="bookmark">
+  <img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="AI 接管了我的网站" class="!max-w-none">
+  <span class="title">AI 接管了我的网站</span>
+</a><a class="recommended-article-item" href="/2026/06/25/hexo-encrypt/" title="hexo-encrypt" rel="bookmark">
+  <img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="hexo-encrypt" class="!max-w-none">
+  <span class="title">hexo-encrypt</span>
+</a><a class="recommended-article-item" href="/2026/06/02/%E6%B2%B9%E7%8C%B4%E8%84%9A%E6%9C%AC/" title="油猴脚本分享" rel="bookmark">
+  <img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="油猴脚本分享" class="!max-w-none">
+  <span class="title">油猴脚本分享</span>
+</a></div>
+   </div>
+   <div class="recommended-mobile">
+   <div class="recommended-article-header text-xl md:text-3xl font-bold mt-10">
+     <i aria-hidden="true"></i><span>推荐阅读</span>
+   </div>
+   <div class="recommended-article-group"><a class="recommended-article-item" href="/2026/11/13/ai-took-over-my-site/" title="AI 接管了我的网站" rel="bookmark">
+  <img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="AI 接管了我的网站" class="!max-w-none">
+  <span class="title">AI 接管了我的网站</span>
+</a><a class="recommended-article-item" href="/2026/06/25/hexo-encrypt/" title="hexo-encrypt" rel="bookmark">
+  <img src="https://cdn.jsdelivr.net/gh/milkmoli/milkmoliimg/index/background.webp" alt="hexo-encrypt" class="!max-w-none">
+  <span class="title">hexo-encrypt</span>
+</a></div>
+   </div>
+  </div>
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2026/11/13/ai-took-over-my-site/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">AI 接管了我的网站</span>
+						<span class="post-nav-item">下一篇</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">目录</div>
+		<div class="page-title">给自己的博客加一道门：我写的加密插件踩了三个坑</div>
+		
+
+	</div>
+</div>
+	</div>
+	
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="color: #ff0000; --fa-animation-duration: 0.5s;"></i>&nbsp;&nbsp;<a href="/">milkmoli</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 9 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
+</script>
+
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
+</body>
+
+</html>
