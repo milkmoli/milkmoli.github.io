@@ -206,23 +206,30 @@
     }
   }
 
+  var started = false;
+
   function boot() {
     init();
+    if (started) return;
+    started = true;
     var events = ['swup:page:view', 'swup:content:replace', 'swup:page:loaded', 'swup:visit:end', 'pjax:complete', 'turbo:load', 'hexo:page:load'];
     for (var i = 0; i < events.length; i += 1) {
       document.addEventListener(events[i], function () { setTimeout(init, 0); });
     }
-    if (window.MutationObserver) {
+    if (window.MutationObserver && document.documentElement) {
       var timer = null;
       var observer = new MutationObserver(function () {
         if (timer) return;
         timer = setTimeout(function () { timer = null; init(); }, 60);
       });
-      observer.observe(document.body, { childList: true, subtree: true });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
     }
-    window.hexoEncryptInit = init;
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
+  // 立即初始化：不依赖 DOMContentLoaded
+  // （页面若被慢速外部资源卡住，这个事件可能迟迟不触发，界面就会「点了没反应」）
+  window.hexoEncryptInit = init;
+  boot();
+  document.addEventListener('DOMContentLoaded', boot);
+  window.addEventListener('load', boot);
 })();
