@@ -1,90 +1,84 @@
-/* 文章图片查看器（Viewer.js）
- * 替换之前的简易灯箱：支持双指缩放、滑动切换、旋转、全屏、缩略图列表。
- * 用「按需创建 + SPA 切页后重建」的方式，避免 swup 换页后失效。
+/* 文章图片查看器（GLightbox）
+ * 单实例复用：只创建一个 lightbox，切换图集时 setElements，避免重复实例叠加。
+ * 过滤无效图片（空地址、/、data 占位符），否则点坏了会跳到站点根目录。
  */
 (function () {
-  if (window.__blogViewer) return;
-  window.__blogViewer = true;
+  if (window.__blogLightbox) return;
+  window.__blogLightbox = true;
 
-  var viewer = null;
-  var currentRoot = null;
+  var lightbox = null;
 
-  var OPTIONS = {
-    navbar: false,
-    title: function (image) { return image.alt || ''; },
-    toolbar: {
-      zoomIn: 1, zoomOut: 1, oneToOne: 1, reset: 1,
-      rotateLeft: 1, rotateRight: 1,
-      flipHorizontal: 0, flipVertical: 0,
-      prev: 1, next: 1, play: 0, fullscreen: 1
-    },
-    keyboard: true,
-    loop: true,
-    movable: true,
-    zoomable: true,
-    scalable: true,
-    rotatable: true,
-    tooltip: true,
-    fullscreen: true,
-    transition: true,
-    backdrop: true,
-    zoomRatio: 0.1,
-    minZoomRatio: 0.2,
-    maxZoomRatio: 8,
-    slideOnTouch: true,
-    zoomOnTouch: true,
-    zoomOnWheel: true,
-    toggleOnDblclick: true
-  };
-
-  function contentRoot() {
-    return document.querySelector('.markdown-body');
+  function srcOf(img) {
+    return (img.currentSrc || img.getAttribute('src') || '').trim();
   }
 
-  function ensureViewer(root) {
-    if (!window.Viewer || !root) return null;
-    if (viewer && currentRoot === root) { try { viewer.update(); } catch (e) {} return viewer; }
-    if (viewer) { try { viewer.destroy(); } catch (e) {} viewer = null; }
-    currentRoot = root;
-    viewer = new window.Viewer(root, OPTIONS);
-    return viewer;
+  function isUsable(img) {
+    var src = srcOf(img);
+    if (!src) return false;
+    if (src === '/' || src === location.origin + '/') return false;
+    if (/^data:/i.test(src) && !/^data:image\/(png|jpe?g|webp|gif)/i.test(src)) return false;
+    // 头像、图标之类的小图不进图集
+    if (img.naturalWidth && img.naturalWidth < 150) return false;
+    if (img.clientWidth && img.clientWidth < 120) return false;
+    return true;
   }
 
-  // 捕获阶段接管：避免主题自带的看图组件抢事件
+  function usableImages(root) {
+    return [].slice.call(root.querySelectorAll('img')).filter(isUsable);
+  }
+
+  // 正文容器在不同页面上不一样，从被点的图往上找第一个「真的有图」的容器
+  // 只用正文容器：封面、头像、底部推荐阅读的缩略图都不算
+  var ROOTS = ['.markdown-body', '.article-content'];
+  function findRoot(img) {
+    for (var i = 0; i < ROOTS.length; i++) {
+      var el = img.closest(ROOTS[i]);
+      if (el && el.querySelectorAll('img').length) return el;
+    }
+    return null;
+  }
+
+  function instance() {
+    if (!lightbox) {
+      lightbox = window.GLightbox({
+        touchNavigation: true,
+        loop: true,
+        zoomable: true,
+        draggable: true,
+        openEffect: 'fade',
+        closeEffect: 'fade',
+        slideEffect: 'slide'
+      });
+    }
+    return lightbox;
+  }
+
+  function open(root, target) {
+    if (!window.GLightbox) return;
+    var imgs = usableImages(root);
+    var index = imgs.indexOf(target);
+    if (index < 0) return;
+    var elements = imgs.map(function (img) {
+      return { href: srcOf(img), type: 'image', description: img.getAttribute('alt') || '' };
+    });
+    var lb = instance();
+    lb.setElements(elements);
+    lb.openAt(index);
+  }
+
+  // 捕获阶段接管，压住主题自带的看图组件
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || t.tagName !== 'IMG') return;
-    var root = t.closest('.markdown-body');
+    if (t.closest('.glightbox-container')) return;
+    var root = findRoot(t);
     if (!root) return;
-    // Viewer.js 还没加载完（网络慢）时不要拦截，退回到主题自带的行为
-    if (!window.Viewer) return;
+    if (!window.GLightbox) return;
+    if (!isUsable(t)) return;
+    // 浮层已经打开时，忽略页面上的新点击，避免反复开关
+    if (document.body.classList.contains('glightbox-open')) return;
     e.preventDefault();
     e.stopPropagation();
-    var v = ensureViewer(root);
-    if (!v) return;
-    var index = [].slice.call(root.querySelectorAll('img')).indexOf(t);
-    if (index < 0) return;
-    v.view(index);
+    open(root, t);
   }, true);
-
-  // SPA 切页：内容换了要重建实例
-  function refresh() {
-    var root = contentRoot();
-    if (!root) return;
-    if (root !== currentRoot) {
-      if (viewer) { try { viewer.destroy(); } catch (e) {} viewer = null; currentRoot = null; }
-    }
-  }
-  ['swup:page:view', 'swup:content:replace', 'swup:visit:end', 'swup:page:loaded'].forEach(function (ev) {
-    document.addEventListener(ev, function () { setTimeout(refresh, 80); });
-  });
-
-  // 解密后的内容、懒加载图片等动态插入时也能纳入
-  if (window.MutationObserver) {
-    var timer = null;
-    new MutationObserver(function () {
-      if (timer) return;
-      timer = setTimeout(function () { timer = null; if (viewer) { try { viewer.update(); } catch (e) {} } }, 200);
-    }).observe(document.body, { childList: true, subtree: true });
-  }
 })();
