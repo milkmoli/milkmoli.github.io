@@ -56,6 +56,8 @@
     if (!t || t.tagName !== 'IMG') return;
     var root = t.closest('.markdown-body');
     if (!root) return;
+    // Viewer.js 还没加载完（网络慢）时不要拦截，退回到主题自带的行为
+    if (!window.Viewer) return;
     e.preventDefault();
     e.stopPropagation();
     var v = ensureViewer(root);
