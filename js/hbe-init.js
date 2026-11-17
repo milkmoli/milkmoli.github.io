@@ -1,59 +1,64 @@
 /* hexo-blog-encrypt 兼容层
  *
- * 本站有两个坑，这里一次性兜住，不修改插件源码：
- *  1. 插件脚本是页面内 <script src>，swup 切页时不会执行 → 主动加载一次；
- *  2. 插件只在 DOMContentLoaded 自动 init，容器可能晚于它 → 就绪后补调 init()。
+ * 本站三个坑，统一在这里兜住，不改插件源码：
+ *  1. 插件脚本写在页面内容里，swup 切页不执行 → 检测到加密容器就主动加载；
+ *  2. 插件只在 DOMContentLoaded 自动 init，时机常早于容器插入 → 定时轮询补 init；
+ *  3. 页面内可能同时存在新旧两个容器副本 → 逐个检查，未初始化的都补上。
  */
 (function () {
-  var loading = false;
+  var loadingSrc = {};
 
-  function initHbe() {
-    if (!window.hexoBlogEncrypt || typeof window.hexoBlogEncrypt.init !== 'function') return false;
-    try { window.hexoBlogEncrypt.init(document); } catch (e) {}
-    return true;
+  function initOne(el) {
+    if (!el || el.__hbeInit) return false;
+    try { window.hexoBlogEncrypt.init(el); return true; } catch (e) { return false; }
+    }
+
+  function containers() {
+    return [].slice.call(document.querySelectorAll('#hexo-blog-encrypt, .hbe-container, [data-hbe-format]'));
   }
 
-  // 找页面里插件脚本的地址（加密页会带 <script src="/lib/hbe.xxxx.js">）
   function bundleSrc() {
     var tag = document.querySelector('script[src*="/lib/hbe."]');
     return tag ? tag.getAttribute('src') : null;
   }
 
-  function ensure() {
-    if (initHbe()) return true;
-    if (loading) return false;
+  function loadBundle() {
     var src = bundleSrc();
-    if (!src) return false;
-    loading = true;
+    if (!src || loadingSrc[src]) return;
+    loadingSrc[src] = true;
     var s = document.createElement('script');
     s.src = src;
-    s.onload = function () { loading = false; initHbe(); };
-    s.onerror = function () { loading = false; };
+    s.onload = function () { tick(); };
     document.head.appendChild(s);
-    return false;
   }
 
-  // 等脚本就绪（最多 10 秒）
-  var tries = 0;
-  (function wait() {
-    if (ensure()) return;
-    if (++tries > 50) return;
-    setTimeout(wait, 200);
-  })();
+  function tick() {
+    var list = containers();
+    if (!list.length) return;
+    if (!window.hexoBlogEncrypt || typeof window.hexoBlogEncrypt.init !== 'function') { loadBundle(); return; }
+    list.forEach(initOne);
+  }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensure);
-  else setTimeout(ensure, 0);
-  window.addEventListener('load', ensure);
+  // 主循环：每 300ms 检查一次，持续 60 秒
+  var ticks = 0;
+  var timer = setInterval(function () {
+    tick();
+    if (++ticks > 200) clearInterval(timer);
+  }, 300);
 
   ['swup:page:view', 'swup:content:replace', 'swup:visit:end', 'swup:page:loaded', 'pjax:complete'].forEach(function (ev) {
-    document.addEventListener(ev, function () { setTimeout(ensure, 60); setTimeout(ensure, 600); });
+    document.addEventListener(ev, function () { setTimeout(tick, 80); setTimeout(tick, 500); });
   });
 
   if (window.MutationObserver) {
-    var timer = null;
+    var m = null;
     new MutationObserver(function () {
-      if (timer) return;
-      timer = setTimeout(function () { timer = null; ensure(); }, 100);
+      if (m) return;
+      m = setTimeout(function () { m = null; tick(); }, 100);
     }).observe(document.documentElement, { childList: true, subtree: true });
   }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tick);
+  else tick();
+  window.addEventListener('load', tick);
 })();
