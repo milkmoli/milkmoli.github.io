@@ -409,15 +409,15 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -454,7 +454,7 @@
                     let heatmapChart = echarts.init(heatmapChartDom, isDarkMode ? 'dark' : 'light');
                     const cellSize = [16, 16];
 
-                    const groupedData = {"2025":[["2025-11-16",1]],"2026":[["2026-11-13",2],["2026-11-16",1],["2026-11-14",1],["2026-06-01",2],["2026-06-25",1],["2026-06-02",2]]};
+                    const groupedData = {"2025":[["2025-11-16",1]],"2026":[["2026-11-16",1],["2026-11-14",1],["2026-11-13",2],["2026-06-25",1],["2026-06-02",2],["2026-06-01",1]]};
                     const years = Object.keys(groupedData).reverse();
                     const initYear = '2026' || years[0];
 
@@ -632,13 +632,13 @@
                             itemStyle: {
                                 borderRadius: 8
                             },
-                            data: [{"name":"Hexo","value":6},{"name":"教程","value":6},{"name":"前端","value":2},{"name":"AI","value":1},{"name":"随笔","value":1},{"name":"解谜","value":1},{"name":"项目","value":1},{"name":"配置","value":1},{"name":"加密","value":1},{"name":"效率","value":1}],
+                            data: [{"name":"Hexo","value":6},{"name":"教程","value":6},{"name":"前端","value":2},{"name":"解谜","value":1},{"name":"项目","value":1},{"name":"加密","value":1},{"name":"配置","value":1},{"name":"技术","value":1},{"name":"AI","value":1},{"name":"随笔","value":1}],
                         }
                     ]
                 };
                 
                 if ('tags' === 'years') {
-                    chartOptions.legend.data = ["技术","加密","脚本","教程","解谜","配置","前端","随笔","项目","效率","AI","Hexo"];
+                    chartOptions.legend.data = ["技术","加密","脚本","教程","解谜","配置","前端","随笔","项目","AI","Hexo"];
                 };
 
                 pieChart.setOption(chartOptions);
@@ -696,7 +696,7 @@
                             itemStyle: {
                                 borderRadius: 8
                             },
-                            data: [{"name":"2026","value":9},{"name":"2025","value":1}],
+                            data: [{"name":"2026","value":8},{"name":"2025","value":1}],
                         }
                     ]
                 };
@@ -767,7 +767,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共撰写了 10 篇文章
+                        共撰写了 9 篇文章
                     </span>
                     
                 </p>
