@@ -63,6 +63,14 @@
     if (e.input) { e.input.value = ''; try { e.input.focus(); } catch (err) {} }
   }
 
+  // 只提示、不清空输入框（用于「加载中」这类非错误状态）
+  function showNotice(msg) {
+    var e = els();
+    if (!e.errorMsg) return;
+    e.errorMsg.textContent = msg;
+    e.errorMsg.classList.add('show');
+  }
+
   function hideError() {
     var e = els();
     if (e.errorMsg) e.errorMsg.classList.remove('show');
@@ -124,12 +132,39 @@
     else showError('密码错误');
   }
 
+  // 解密库是异步加载的：慢网或 SPA 首次进入时可能还没到位。
+  // 这种情况不能直接报错，而是等它加载完自动继续。
+  var waitingForCrypto = false;
+
+  function waitForCrypto(attempt) {
+    attempt = attempt || 0;
+    if (typeof window.CryptoJS !== 'undefined') {
+      waitingForCrypto = false;
+      hideError();
+      unlock();
+      return;
+    }
+    if (attempt > 120) {
+      waitingForCrypto = false;
+      showNotice('解密库加载失败，请刷新页面');
+      return;
+    }
+    setTimeout(function () { waitForCrypto(attempt + 1); }, 100);
+  }
+
   function unlock() {
     var e = els();
     var d = getData();
     if (!e.input || !e.btn || !d) return;
     if (e.input.disabled) return;
-    if (typeof window.CryptoJS === 'undefined') { showError('解密库未加载，请刷新页面'); return; }
+    if (typeof window.CryptoJS === 'undefined') {
+      if (!waitingForCrypto) {
+        waitingForCrypto = true;
+        showNotice('解密库加载中…');
+        waitForCrypto(0);
+      }
+      return;
+    }
     var pwd = e.input.value.trim();
     if (!pwd) { showError('请输入密码'); return; }
 
