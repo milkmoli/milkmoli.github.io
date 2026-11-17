@@ -78,12 +78,26 @@
   }
   window.__runChartScripts = runChartScripts;
 
+  /* 有些页面依赖「整页加载」才能正常工作（比如注入 echarts 的统计页），
+     给指向它们的链接加上 data-no-swup，让 swup 放行、走普通跳转。 */
+  var FULL_LOAD_PATHS = ['/stats', '/stats/'];
+  function markFullLoadLinks() {
+    var links = document.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href') || '';
+      var path = href.split('#')[0].split('?')[0];
+      if (FULL_LOAD_PATHS.indexOf(path) >= 0) links[i].setAttribute('data-no-swup', '');
+    }
+  }
+  window.__markFullLoadLinks = markFullLoadLinks;
+
   function boot() {
     // 首屏的脚本已经由浏览器执行过，打个标记避免重复执行
     [].slice.call(contentRoot().querySelectorAll('script')).forEach(function (s) {
       s.setAttribute('data-executed', '1');
     });
     collectChartScripts();
+    markFullLoadLinks();
     var events = ['swup:page:view', 'swup:content:replace', 'swup:visit:end', 'swup:page:loaded'];
     events.forEach(function (ev) {
       document.addEventListener(ev, function () {
@@ -94,7 +108,7 @@
       var timer = null;
       new MutationObserver(function () {
         if (timer) return;
-        timer = setTimeout(function () { timer = null; runInlineScripts(); runChartScripts(); }, 80);
+        timer = setTimeout(function () { timer = null; markFullLoadLinks(); runInlineScripts(); runChartScripts(); }, 80);
       }).observe(contentRoot(), { childList: true, subtree: true });
     }
   }
