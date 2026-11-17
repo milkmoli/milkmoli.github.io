@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><!-- hexo injector head_begin start --><link rel="preload" href="/js/crypto-js.js" as="script"><!-- hexo injector head_begin end -->
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://milkmoli.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-11-27T08:00:00.000Z">
-<meta property="article:modified_time" content="2026-11-15T11:53:30.232Z">
+<meta property="article:modified_time" content="2026-11-17T12:58:25.201Z">
 <meta property="article:author" content="milkmoli">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://milkmoli.github.io/images/redefine-og.webp">
@@ -169,288 +169,7 @@
     
     
     
-<!-- hexo injector head_end start --><link rel="stylesheet" href="/css/encrypt.css">
-<script>
-(function () {
-  if (window.__hexoEncryptCrypto) return;
-  window.__hexoEncryptCrypto = true;
-  var s = document.createElement("script");
-  s.src = "/js/crypto-js.js";
-  s.async = false;
-  document.head.appendChild(s);
-})();
-</script>
-<script>/* hexo-encrypt client v0.6.0
- * 修复要点：
- *  1. 从文章内联脚本改为全局加载 —— swup/pjax 切换页面不会执行新注入的内联 <script>
- *  2. init() 可重入，靠 data-encrypt-ready 去重
- *  3. 事件统一在 document 上委托，只绑一次
- *  4. MutationObserver + swup 事件兜底，任何方式进入页面都能挂上
- */
-(function () {
-  'use strict';
-
-  var CACHE_PREFIX = 'hexo_encrypt_';
-  var tries = 0;
-  var bound = false;
-
-  function byId(id) { return document.getElementById(id); }
-
-  function getData() {
-    var meta = byId('encryptMeta');
-    if (!meta) return null;
-    try {
-      var data = JSON.parse(meta.textContent);
-      if (!data || !data.content) return null;
-      return {
-        cipherContent: data.content,
-        cipherKeys: data.keys || [],
-        maxTries: data.maxTries || 3,
-        postId: data.postId || '',
-        remember: data.remember || '',
-        rememberDays: data.rememberDays || 7
-      };
-    } catch (e) { return null; }
-  }
-
-  function els() {
-    return {
-      box: byId('encryptBox'),
-      input: byId('encPwdInput'),
-      btn: byId('unlockBtn'),
-      errorMsg: byId('errorMsg'),
-      wrapper: byId('inputWrapper'),
-      content: byId('decryptedContent')
-    };
-  }
-
-  function storageFor(remember) {
-    return remember === 'session' ? window.sessionStorage : window.localStorage;
-  }
-  function cacheKey(id) { return CACHE_PREFIX + id; }
-
-  function updateLabel() {
-    var e = els();
-    if (!e.input || !e.wrapper) return;
-    var active = document.activeElement === e.input || e.input.value.length > 0;
-    if (active) e.wrapper.classList.add('active');
-    else e.wrapper.classList.remove('active');
-  }
-
-  function showError(msg) {
-    var e = els();
-    if (!e.errorMsg) return;
-    e.errorMsg.textContent = msg || '密码错误';
-    e.errorMsg.classList.add('show');
-    if (e.input) { e.input.value = ''; try { e.input.focus(); } catch (err) {} }
-  }
-
-  // 只提示、不清空输入框（用于「加载中」这类非错误状态）
-  function showNotice(msg) {
-    var e = els();
-    if (!e.errorMsg) return;
-    e.errorMsg.textContent = msg;
-    e.errorMsg.classList.add('show');
-  }
-
-  function hideError() {
-    var e = els();
-    if (e.errorMsg) e.errorMsg.classList.remove('show');
-  }
-
-  function showContent(plain) {
-    var e = els();
-    if (!e.content || !e.box) return;
-    e.content.innerHTML = plain +
-      '<div class="re-encrypt-wrapper"><button class="re-encrypt-btn" data-encrypt-reset="1">加密</button></div>';
-    e.content.style.display = 'block';
-    e.box.style.display = 'none';
-    if (window.MathJax && window.MathJax.typeset) {
-      try { window.MathJax.typeset(); } catch (err) {}
-    }
-    var d = getData();
-    if (d && d.remember) {
-      try {
-        storageFor(d.remember).setItem(cacheKey(d.postId), JSON.stringify({ content: plain, timestamp: Date.now() }));
-      } catch (err) {}
-    }
-  }
-
-  function loadFromCache() {
-    var d = getData();
-    if (!d || !d.remember) return false;
-    try {
-      var storage = storageFor(d.remember);
-      var raw = storage.getItem(cacheKey(d.postId));
-      if (!raw) return false;
-      var cache = JSON.parse(raw);
-      if (d.remember !== 'session' && d.rememberDays > 0) {
-        if (Date.now() - cache.timestamp > d.rememberDays * 86400000) {
-          storage.removeItem(cacheKey(d.postId));
-          return false;
-        }
-      }
-      showContent(cache.content);
-      return true;
-    } catch (err) { return false; }
-  }
-
-  function clearCache() {
-    var d = getData();
-    if (!d) return;
-    try { storageFor(d.remember).removeItem(cacheKey(d.postId)); } catch (err) {}
-  }
-
-  function lockInput() {
-    var e = els();
-    if (e.input) e.input.disabled = true;
-    if (e.btn) e.btn.disabled = true;
-    showError('尝试次数过多，请刷新页面');
-  }
-
-  function fail(d) {
-    tries += 1;
-    if (tries >= d.maxTries) lockInput();
-    else showError('密码错误');
-  }
-
-  // 解密库是异步加载的：慢网或 SPA 首次进入时可能还没到位。
-  // 这种情况不能直接报错，而是等它加载完自动继续。
-  var waitingForCrypto = false;
-
-  function waitForCrypto(attempt) {
-    attempt = attempt || 0;
-    if (typeof window.CryptoJS !== 'undefined') {
-      waitingForCrypto = false;
-      hideError();
-      unlock();
-      return;
-    }
-    if (attempt > 120) {
-      waitingForCrypto = false;
-      showNotice('解密库加载失败，请刷新页面');
-      return;
-    }
-    setTimeout(function () { waitForCrypto(attempt + 1); }, 100);
-  }
-
-  function unlock() {
-    var e = els();
-    var d = getData();
-    if (!e.input || !e.btn || !d) return;
-    if (e.input.disabled) return;
-    if (typeof window.CryptoJS === 'undefined') {
-      if (!waitingForCrypto) {
-        waitingForCrypto = true;
-        showNotice('解密库加载中…');
-        waitForCrypto(0);
-      }
-      return;
-    }
-    var pwd = e.input.value.trim();
-    if (!pwd) { showError('请输入密码'); return; }
-
-    var randomKey = null;
-    for (var i = 0; i < d.cipherKeys.length; i += 1) {
-      try {
-        var out = window.CryptoJS.AES.decrypt(d.cipherKeys[i], pwd).toString(window.CryptoJS.enc.Utf8);
-        if (out) { randomKey = out; break; }
-      } catch (err) {}
-    }
-    if (!randomKey) { fail(d); return; }
-
-    try {
-      var plain = window.CryptoJS.AES.decrypt(d.cipherContent, randomKey).toString(window.CryptoJS.enc.Utf8);
-      if (!plain) throw new Error('empty');
-      tries = 0;
-      hideError();
-      showContent(plain);
-    } catch (err) { fail(d); }
-  }
-
-  function reset() {
-    var e = els();
-    if (!e.box || !e.content) return;
-    e.box.style.display = 'block';
-    e.content.style.display = 'none';
-    e.content.innerHTML = '';
-    if (e.input) { e.input.value = ''; e.input.disabled = false; }
-    if (e.btn) e.btn.disabled = false;
-    hideError();
-    if (e.wrapper) e.wrapper.classList.remove('active');
-    clearCache();
-    tries = 0;
-    if (e.input) { try { e.input.focus(); } catch (err) {} }
-  }
-
-  function bindOnce() {
-    if (bound) return;
-    bound = true;
-    document.addEventListener('focusin', function (ev) {
-      if (ev.target && ev.target.id === 'encPwdInput') updateLabel();
-    });
-    document.addEventListener('focusout', function (ev) {
-      if (ev.target && ev.target.id === 'encPwdInput') updateLabel();
-    });
-    document.addEventListener('input', function (ev) {
-      if (ev.target && ev.target.id === 'encPwdInput') { hideError(); updateLabel(); }
-    });
-    document.addEventListener('keydown', function (ev) {
-      if (ev.target && ev.target.id === 'encPwdInput' && ev.key === 'Enter') {
-        ev.preventDefault();
-        unlock();
-      }
-    });
-    document.addEventListener('click', function (ev) {
-      var t = ev.target;
-      if (!t || !t.closest) return;
-      if (t.closest('#unlockBtn')) { unlock(); return; }
-      if (t.closest('[data-encrypt-reset]')) { reset(); }
-    });
-  }
-
-  function init() {
-    var box = byId('encryptBox');
-    if (!box) return;
-    if (box.dataset.encryptReady === '1') { updateLabel(); return; }
-    box.dataset.encryptReady = '1';
-    bindOnce();
-    tries = 0;
-    if (!loadFromCache()) {
-      var e = els();
-      if (e.input) { try { e.input.focus(); } catch (err) {} }
-      updateLabel();
-    }
-  }
-
-  var started = false;
-
-  function boot() {
-    init();
-    if (started) return;
-    started = true;
-    var events = ['swup:page:view', 'swup:content:replace', 'swup:page:loaded', 'swup:visit:end', 'pjax:complete', 'turbo:load', 'hexo:page:load'];
-    for (var i = 0; i < events.length; i += 1) {
-      document.addEventListener(events[i], function () { setTimeout(init, 0); });
-    }
-    if (window.MutationObserver && document.documentElement) {
-      var timer = null;
-      var observer = new MutationObserver(function () {
-        if (timer) return;
-        timer = setTimeout(function () { timer = null; init(); }, 60);
-      });
-      observer.observe(document.documentElement, { childList: true, subtree: true });
-    }
-  }
-
-  // 立即初始化：不依赖 DOMContentLoaded
-  // （页面若被慢速外部资源卡住，这个事件可能迟迟不触发，界面就会「点了没反应」）
-  window.hexoEncryptInit = init;
-  boot();
-  document.addEventListener('DOMContentLoaded', boot);
-  window.addEventListener('load', boot);
-})();
-</script><script>(function(){if(window.__spaInlineLoader)return;window.__spaInlineLoader=true;var s=document.createElement("script");s.src="/js/spa-inline-scripts.js";s.async=false;document.head.appendChild(s);})();</script><link rel="stylesheet" href="/css/fancybox.css"><script>(function(){if(window.__fancyboxLoader)return;window.__fancyboxLoader=true;var files=["/js/fancybox.umd.js","/js/image-viewer.js"];for(var i=0;i<files.length;i++){var s=document.createElement("script");s.src=files[i];s.async=false;document.head.appendChild(s);}})();</script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
+<!-- hexo injector head_end start --><script>(function(){if(window.__spaInlineLoader)return;window.__spaInlineLoader=true;var s=document.createElement("script");s.src="/js/spa-inline-scripts.js";s.async=false;document.head.appendChild(s);})();</script><link rel="stylesheet" href="/css/fancybox.css"><script>(function(){if(window.__fancyboxLoader)return;window.__fancyboxLoader=true;var files=["/js/fancybox.umd.js","/js/image-viewer.js"];for(var i=0;i<files.length;i++){var s=document.createElement("script");s.src=files[i];s.async=false;document.head.appendChild(s);}})();</script><script>(function(){if(window.__hbeInitLoader)return;window.__hbeInitLoader=true;var s=document.createElement("script");s.src="/js/hbe-init.js";s.async=false;document.head.appendChild(s);})();</script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.2"></head>
 
 
 <body>
@@ -712,16 +431,31 @@
 		<h1>关于茉莉</h1>
 		
 
-		<div class="encrypt-container" id="encryptBox">
-  <div class="input-wrapper" id="inputWrapper">
-    <input type="password" id="encPwdInput" placeholder=" " autocomplete="off" />
-    <label for="encPwdInput" id="pwdLabel">请输入密码</label>
+		<div class="hbe hbe-container" id="hexo-blog-encrypt"
+     data-hbe-format="4"
+     data-wpm="密码不对，再试一次。"
+     data-whm="密码不对，再试一次。"
+     data-salt="4d366147458172cacfff7da8b2b081d86fa8ff7a3a762d127e985465713d7b7d"
+     data-nonce="c0018ccd747ae43de057cbca"
+     data-kdf-iterations="600000"
+     data-auto-save="true">
+  <script id="hbeData" type="hbeData">
+    ef89cffbae99534c456388a580203d77cb029235b942a6a81d03b964195e90ce9d51554116a71d3cc0fc0e3eaaf4bd226059750b0ec3955d614a9e46bc7b4cd81ec125089de65a5e3fbc3aa656cab997df7a2da74b17227f45e2e769d9016d7506a78a47f27b17442749f3d941b2567f2f7163ada92665ce25e57c07993ae4fbd80a108fee71eb7d146bdaceaa5240c382b6797d01e316578c96b28eea0ef5b1330c992bbc37acffe884505b89a6247abdc5fbf1986f40695de2044a7a626e3441993a129cb612d05cfef692652425482acf6c0d39a09faa87910905f80ab0751b2249b2a2ff65415dee8beee023f6e69e2455e32427a97b44aaa1f77e504ebdc501efe15e5f728f30b4c1d490fb75648b64afd46b69d6dfe67b01b4a8766fa1dea9ccd87f72b4562477d39ffbbda898f78c563303150ef37b4cb5ce288bb4abdcba0793c97a07470154039699628fea5f46cf5ffaacfb4846bac5d64f3fa402c08e2e076c47f17367729ceb3d9dcaa0861f94be3ce7385ee377b68d6492214556ccb683f5518139350a7a2f065d4942241de64e58cb5ecfabac673b571143c7eb5a47fa0c75cbc6f3d43e5f2f5088172de4714bf6fb3ccbcd5168c8684b1bb9c387dfafb0e431be07033ed92db9381e78b701a987efd99ee3da266aa3e8971ed60aab37e279f6cb2efb29d269af903185b5fbd4dbff61f06a22b8d179e0c4538fcf24e230055d812920ae2ae60e3e592f7b0e2631833b9f2c763b9a672f3bd11c0a9e210600b7d3599149e473f20a6bfeaa1d2b5f7757c8cee653bb1d8b3d05506634e830f2c05b04cb29cf91badea7232a48c44ce1908b0c3000a5d3cbccc2681db8911e312271df94f99ac42e00821e78546e89bb1f2c2413cccaad005829e1b1ae3f7f6ea2d4226ce27802ff55a2b1f35c3c76bba8a84273e701e81cc1f569803796126511816d6079c59e92ed5d8edca9ee461a2b025c65c3107c01e810102a877dfe1f1d56a59ea3f78d81f8250adf2ff4969700714d86ebdb2ed00ea9ae7ba8f873c1e3819f1f95f4c14fd579adb6905c83aecc8d07cc16082fcf996e13c6057f85a08c9640f4869307e345f7b338009f0341a434e0f399533e6e2731cd053d4406545f1ec5c4d503d6dbecf8400d3af8505b1fd326102a578629d0b98b5a4076a02f812b3380518d114a584595a8eb8d55d52361b2f02abb659ff998fbaad8b70cdc65c6c1592e9461a45964d6259adabfc0240d6f26472ab69b9aefb821369e089ffaa2d4d3ff9c65ad6942e9213042a6dd0bad261b670dcc98139f6ea59f27d55d90b19b9273e79b10179b809d7b38a6408d15fd4ec280d575a12bda8012d3760e8fe4964099f851ef0472cc0e490814c29596577802c543d2dc11d07259913ddc030a24f082915228bad0c23b53bb75f0b7ffb4d85ce876f0a6c55702104e5be8a35718c4bc1dc599d7541916267ed5c7a3fe1c0aec478e8eb7551968e5dbd326c678a56d9c7744241b8ee1bae990d5b73523e4863459dd4f2cbca33ac6598d5971e963ecffa4c619b3636edaaca756a2ea6284173218d8666f92ad65b2a6504dfdafad3e46d430916da9c40715401dd45e5a940516ce04dfe1396ede69a49eb1ede7ff0618a3656c67421e16505b98597a1e7bf06adb3f516b8fb356f94170ce763cf0f5171c083dda75f1ec0a1bac95f9856e2153d1a9c8066e37b558dc22aec231eed07e3388bbafda3ef351119a10e641ac14aa0e51dc4d678cf3607a6f564d21705f9ef50578be97b965498e561f20dc667b232b7c270169c665eea277667d3544cf4b5e90f018721cfae7fe377aeade1cae3bd9cc8868ed2c4b05d059084b944fa30fbe91269c2f66fd30a92d5e90783e9037ecf38ce442f4c5e4a0d5d0fd7ef885445c8bf731e22e64c2b5c52ed164ab398eaf814b2ab286a3b913be19a0ec83616bc7a5a4e1cfb15f97bbc5d427e3964b526c0e5cce4a6d83130292f3f916911802bffee6f1ccba43d969b710f26dd60dbc53d27f25cc51444da9635c07b0deb3af83f6337fbacdd7d78830a9c9d17966c1c6991f2eda154dd8bc3b54097e55d7fde4679cbfe0ef0ef9996f5af42f28fd12c3a2df3b4b7b6f6fb7f97d6eba8ec46c4d52291b2c80b9693308bf57fb48193e93b08d180551ad214245a729b400724736b647489ddc89615fe4fa5a531bc9d4be32a3ba38b5d69be2d99122cb7852a9e16ef01ba3c4a610636ac941ee42ac3e1561059f44e099b3e9c6e16f00d326bb372a8cfa8e331a76e5519eef289302a53b458cfb147a590268ed690fa553fe00ad4fc742393bb196927a5fba975d9a8fef362f5022af14e6dd843099c78bbf33bcc670b8e9d79f049ad3d0c80bd9c1b9f17a77e9ec51551cdd5cffa31581242b6aaa9a62a16a0b8ec92751cf5937e25f1ec973b19e05c53150679fabfb10009e0a91ca0f6809422bbd60de6cc3bd917be9021cd2479504d47de4cf75fe1cb4780d75c3c1e93a5a5faa6e9836e2df4a10f12f0b4dd1780ff22b0e27ac61df37002ef6ae41e73ef2826cd376aae73a7b186c6505c62a1786e8147093c5254b63d87a33943fc5d36f70efe916db9a0e80eb7e86b807aaa65b610c840eeaa5527fde92237f6f3cc30a2cf6c6c4ed653333f816e793af7858c6c46cb4fa9fddd68fac2f5b68dbe686e4a845bafae619123a359269aef10c454ca38e892e21cda1966e5cd08ee3d5ed997f7db0f2850491cc8cc17a2c48276762d00ed1246fc8e6e523ca4d52645c608cc9942c64336df81b72d5717d3b7b71fbe11fbabdd138d118d283d83be7747c73a7cdc3cc66447e45c6aa3df0d78b27e8149951063c8e32a9d24de57d221e1487cbf1fc9f54c4991d458d38aaa2f932b77f42693d709eb9c2bc2ccdbd55e6d98fb45fa16326317ec25c22b8fbfcab5bebe560ff6a8fd4043ffeca4220375c0214b7a7d8df4d22455bffb6de387546a45db749751ae087b3a60a8bb410e6506751abd6f46f8ebd88aee615c88671913078037691ebdfb87b9e9b130a42088f1c5915ec762f6450409304ff2809dd5bf0afcd197caab5bb2862fc9ea33174a172c35cb956efb638e848e7a0a565b76321bad9630d5c661d4670e24336394e1dda0d9811a430eacadf27e2e02e26e8297789d432bd1ce00ab77518c057a0f2e9c6388567911ac79da85fb6aef7f9985d3002ef0c01b9c9fde8efa145ae641ca357b726a1cfbc5016d9aaf06efc2c79bd7bbe88fbef746a5fadcc270fe0e9b060bccdfdfea5d922661f59fbb72a7964c16dcb16a3312f92ec8e848601273333d1cc554f67a8ba3c7c37e825098c0bc8f2d73019f0c320c8ee338049f8e367dc376f25342816407113f92ebc6f97a1bfc3e3ebc786977e26807a0d9901eb8a49988c1026113265a96df05e9be8dc1df2751c60417c33e9a267bf83cf8b3a7cd9ab92bedefe4b4df9866ae62baa8e99099e72352c2f4744f6e3a31930b62d99ac59cbbf6c0300bdac8a73a8ef8153ed51a213ab2127d2b291e179fa72adf2a2d8e5ec663bf094e5649f65d229c567c8952e9f3d6bfceb6576e67308789689cc27e55b3e609e0b6ebbfe55155cd8e0dcb8308078a282cac74440d5b32ccb1ae8537c4171a46561b79b6fc99023fc8f1b5c3da23d2b44af031c2568ccd0673a30d64bedcb5eb1b6389b03fe6f7eb34dc7e00de55859af11e964b254458b4eba655e77a02c2f9fc388b5a368694278866e5f65d6b6d3daf59957bd3a81a234e19506088656d645265dade8d19d4110111e20d60db1e032f065986105f98f265064af9d1b0ffcc5ee30b3c48b4f0b46bf1c1519da2462497344937adef2fe84e372f58b79a09b256e7195238e56921605c9c3ba98584a3d047e784951a7a1e4cbe7e6bbe14693c2d8a311e347032f51424a03d7b194f6b8a241e3ad446714c1bc1434140ec4719b7ecbd805983272f2c36100c6e7a71a4852326aed2745dc382b226a0a6a05cd7ac2b03ec5aaf6e069a5d87789705397be85d09a85b963b0fc43e53a7131582812d675650900dc1df217ba0108766032051b72a8827e624dec405a6fd1e17ebfd92283801a6ded159db5beb5f70c3237604c50133d790e332b67e838a145066284307d0ff53e657dc754d472b2ce6b684c583f33c539acc258c9818f6c17e3d018b9e34396c90e84d25e643c3f8dcb90461a9d2014488cbd35821bc79737e9f4fd24e39f9ad2662d9c20f392516322bab12130480157b9a27037dd6e944fb0c3a99ba5aa158ae00d5a816fa94c1e81582404dea9b566298c8cc4344b46ea6368764c8a407ede6f635b522b28bfdb3040f44188d6fc7615521fea1a0efcb5341349e1bcc80c441d0f5c05dd76a369b0a664caa05396cba0c66c728142f3906db7e3850447a9f4efa99111b563af8fb82014244f69e4e129ded3737eccecc75d0d9e47c92adc5149d2b5a5d4c66f65cd83b1b2f8af88cda05e2f04c9794ec8da26a94d7d9a90881c7d820b54b854669539973c683e41839e7c5b0f8a1cd10546cea69ebe3fa8d551e3873e959943ee4c5c9c6916768953eceb4acf86f7d3e0261102830bc368a596d0e85f65c8cb3fdbd7c1be5fa51cf60c09416023b1f8ee1f3901937426b2c06ba17cc88a8755df5d7f359bfebe1ae2719e26d94e8c421e5ff86ad8fdd35558f382563679b0a3b5cbfacdbc8e3dc52f039ad3ca260e74c6df5d9c63882a74c524d7d1002f0fa6987c0431c42d79e36f8b09405cc4eb12d0e560542c65462bb862d6c074e82eba3aec7a3d05e173d6191ee115240606f781eb18b339ae8d28c248079b6963b4b97533b96afd8617b24ac785ac582ba791d43e3935875bc5a63f6810d388b3f4276ed3c03f7c82dc886206ba9dbdebfa52ae0a52928fbd83310ef49b7dad0e6f0ca91b703bb62dcbb9ddbba90ef5c99e70ec8980be7715e6b6b2e05d42ac65d0cba072af406de47020cb15622a6804f9c5dd31ff5b1a141ad0af464f43146805f7b0335c0b5d3927ac875ef979a307e9af9d636425cfb49f70977aad8d24eaad117014e64b7f901ebbb84907d675aee6fbe1acf0c15b3f7067f03d19b8d762efa00cf6ac88a8232df8fe7f3ab6c8be15fad4efbf176efb5709cda2868462323367c33abd028b0fbbe39ce304ee12088524774334dd774d3ef65ad815b3fc9fcc0d46a7194bdbe30a740c8337cefe807e7a605867f9f365e975747cf9128ff5a1fb80e4c306644c54a42279766ad9d40a42df4552f3e1c03da448a6cacfed9a1cde875c62ed582cddd4a390f6308d8481eed5e3bac3cf7a51ae283a4691ae6a26b6ffbfc03ad0d05ac610dc56b27b03c23f1d088d344a91022b81f1db3e4c6366157a290692137e91addc24a77e1d7c6342ff9ae1c077b38170aa2df9fc5e3465460302e7128516901e32ae8236eea31277d37d70a002060cca504e23e7dc43b6c73c15c36fe6a4a97ef1acc0338da4616a80cf71c970140642e5653c4045980cec2d939fd961b16e773b451847f474917510e975129b9258c5d6656de80e95e9440b2c66f80bbb9fef998f5be80014e51aefc921b88a38cc0c32d4793e7286b83d99a1892bd96d26cd546300527f03e28400de071a465ef047ccd9bce0ae290620ddb8fa78266339640c35584d3b77335ed78ea75b2efcfcffd5dbd052f9d937fff1ae6e367f5d6253e1926283280815682eb36f86711a1ca78f3a7912a4a06e38eb63fede84425792
+  </script>
+  <div class="hbe hbe-content">
+    <form id="hbeForm" class="hbe hbe-form">
+      <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">请输入访问密码</span>
+      </label>
+    </div>
+      <button class="hbe hbe-button" type="submit">解密</button>
+      <div class="hbe hbe-error" role="alert" aria-live="polite"></div>
+    </form>
   </div>
-  <button class="decrypt-btn" id="unlockBtn" type="button">Decrypt</button>
-  <div class="error-msg" id="errorMsg">密码错误</div>
 </div>
-<script type="application/json" id="encryptMeta">{"content":"U2FsdGVkX19gTcW9vjrPHSjB+QXMisy97US1BjAhGBUZBd1M1X4nZdBqtFdzh2vQQyGTDSsMpQXCWnF9/p2pMT0XKDsSUw2QZvgHwrD79Uh8ryPxtWZb+qTIXmL1lT72K/PkOHlRYoa+uLIIilck+L/uUUFB/rHe/159H8kHPibjKEh0jo3H7n2c+M/mWvklzcpjN0Pv0CSHlfuVltSIhYJQNrxrtwboJ7Osz41J43obXzuqnR6tiUmtqljgMuOWgpyG5Aj8YQyh0iybEPvtOG4yQnNmKGmZgJ0pM4SATHMhPoRs7ma3btd5shyY8HzDpTzWQBIdrA0jzRFS3NhNrGd9AoP0MY1vYD1nndeLTDCjtSPc8ko94q+KDx92HI+snd+a5P8jB/QJgA7BxSDQ2P8DHfnNnpsr4lnIBmwC1Yh38C9bCl5xAlBXj7F37SaA4yG0+upD0wTlPUUjyjpjp/8EEzzkfZ5LNxjsPVEFEZ//ZCBmyyoCCk/CDA55d8+2h4I1LAXgzJAJ6WAShlXzF/kzzCrIIvuh3JxV3v/EUmoSaBtbm1EU5HYkMxGpDJ+c2E6oLga+VqJHMZw2++JUh1RAkIeij3BH4Th3lIAAJZzTWVmeoxxfM7SOYCuEgcXD6KHg5j5xbFKJs/Sdm/xo823q6D6EdNR42u70imV0W+i4UNLoK5hxixxtOQgDMTjQYdbBVlNOVoWUBoOqM24jYZO/TsCzChM33gLCEmHAKGglFEBv2qWKQKfv+TJN5WH9NERIlJEzw4ZOhn2k8mLs4YoMTlX/NOg5ZUasVrfE8X4Bc+/UIvultV3N/EpVRZAT7ojPOakKjXKFKw/VmbxeXNxpImjn0DCkS474To0SRE5deWAAgt3C+SzFg6553XzuqjP3WTGuLeMMeFgkfC+kRK+k6uGAnWMUXKeNyh3PQm0qnD8bplomqmjME0UUVeVGGk2t/qHicP0nQaHbKI5CzJ2v6TAcsgOSXlaWknjRif3od04ElVD6WxdigHpnXIGxld1rv9/LG0mIwmNAkLooS7GNZYRrZL3QVXk4D0LQxMd0T3rdkXYZitLqgNFvsRFTX4U6kueq9FpKnLRY5pD7ss7ScjebUmdwWTyzxxbmFibuGRYTvDM/fmG48qdRqmPZepdOBPuFlpdm6gg1wqrafNlpL17T60QGNJa8J7JxufcBZjcW+dQzyAOWYzc/5zrS7MFIchQwjL4i2wawOxBagmCfIcgLk5B6mIh3d22FctbG48whxk5R/Nsm5X7otXnjrgcepPtPZoy1sBkHaiUjoxNijxvEDj06OYwJ1DCU/WL0ri25Tas+tuu8hlmkzo0hkGuiERnAJ8OaLnY3KQm/R6aTSJ81i/JXIRM3q0WhNGq3tyZHzbWGNWhij7RrcsvafIT8trWD1+Ymp8YATbWycUQSeK99H1inUwcVaSplCCIi4qLZN1CGQbevQJhx/tInoqHTvnkCgmX2zZvs+T2YdoNmZg+n/8Tzrk8lIBgFWPeohREhLUFkkvXWCAZ3EPtt2Hhht8eKOCLs2ariYMkOhF497MNsj6DQgF9d6QQ6TV9jmx5aR56yGYy23Bbl80qKGxjODRLvADmtAgiYoF2O+AdFBmawNzWQnpxyJxn8v1ifmM9CuRIlwrf+xZMKZwHWem7mDOgUw+0dnsokGQDosvvE9pmakz97D/tMIubqO1Y2SyaWdurVpovwyWnXiHahnjLS/W8LpAzVye1b4yVHDJKkYSLQyJKPOZelzojFdUsufWZmH5CXsw6iUXr/8ffOITuMDa246ADww6TcZ/W6m00SnwC2QAW51cvC+/HpGZG7BgGm/9Pd3FUnbMJwPiTfTecvu4GMaB5EuidmticEl/GHk1DNu8dUbTdO+t6bsJH0mQCdSIR3YGbRdmgOc33Ngvr5pPsawVWAqxDLfQBQ+ip8/itgydckeEodGnZ2e+0yIpNZYjspTiSTTALCez9HXqN7Vwc/JOLtM/k8AgDVhoB0w+7DB0Zsd7TwDXoTOJTrkZ9P8uuums0FDE128gX0EJsmEen20NGZAKK8dgPzN/ZCZ2/4b/mIcIH8+/mYofTQDYgxxy3vilmKuJH/SNcwexB45OI7KmenNg6y6hYt3PdRaQyBeZu/WdE26QBd3Z1J7TZlXp0UyTa/mA4XllgrOeGWelzk0aJDab4/yUHYtY4XUOsI568en+AUJOHEzAk/riKl5iI5eRbqIS2qD5cxW17VApBAHmMX0OcBSvIFh5kqvy3E5h4IJXYjQQkSA7sMslzkWWVWRaGu6eOYlIZz/dDtrcaoLyguDnSjQAimLOoYan1T2WyBG3T10HnmQgB95/jvnFOVptqJuqB6iiUKTCDtDWcAP5ij4/+nvPUSWbeA5jpK426Gy1liy+m52Co5sYG12j53wK/xYxCQLyv2skRkuPUiIDzK1E4HepZTi2rtuqOPy4K2IPi+OFRUZWsLMFZXfLIFdtLiIKH5OWUh72u8ipX3bnCJGiVwV0MNkTINb1yAuhmYCQFcvdgrO5aCdoetZijWKtIXzpI/AoaVJhUZaammQ15eRdOmeR1F337OVsVSv4cQHvAw4qAV0kFk6MbjzCr8n9mfrBiy+LG5Ge27RgE4EiFJ13Uv+L3hBcE4vCMJUdvlyDNxvhfiEHTMZNWv4FNfoCzzZHaBLyNDPhm8sGQAf9z2Hdfq5aQuVxpQDqezh41IXgctlsNrXyeO/lXDjWvhhhoVPdcDYXcQVx5/dNsON+pZOUroska8+6CNPlsFsAflVx45AzNuLdL/vuRinvl6p8im857tJo3zFIQK7YJ6BwEzCwGHiqHhhUK4HaYfdKaqUh1TX0NdeENCQszBSaK7bOxZqnWAzSh/3w7Pj8wgOHZ3/7cIZVO5ktAWM4STXwmcoxrWeBPEH6/m+OwePo1tQPWr3VS5MvM2liV5L69WbvAjNe7LrDUHINPKOkvHoXRadIw0/caaqph/N+XV1IGxue169ryJLagj3ipOcdcBM02n4ZZLdnucw4noCDv8EChQwBfmJmAFXnzC7SwOQ58qtCrSQZD3mB+QeOX1OKkeMutsA7r/2z5syveVULsRH14gGPhHAlOMHOB/FxQhvdzwU7Nv05NE0K3228vkkRAsFTZe3Od68acuJ4qFVt17HhoBCxWDGaHxC7KJLHfaB4souvBHZu4lnLQzkedkBLG1ADElA2H05U9yBCK7ARrvl+bIm5DVO9eDO24VJUZTiKBkjflivCxWvVOcGbtqLusENcLhn63V5kxzSDMj/blYoB9uVCNY4wzCiBQ/UptwNo/HpESRMLJYd87GmBmBUo+yLUKezG17QiRDQsfddhzkFK8xU1TOZS+00LEvXc4guWRTfpCAB1NOtSmB0UiLt1vChNBuHcJu8i7VF2QVO/pvBSMqPHlG4EQ8GC+Nd81jPWu0OiCgrPRM2Z2eC7qXPmNQ51xRBUN4NQ3vAJu153HhTfaST5+H5D3ClT8dLwL6dGjktjYmDmp45olCnfg4apcr/5U4/9Vpe1DHpCL5G7yGicofId/1p/CvZXv7PCnyHKBeLb+Ofv05Jm6WJ+ndKlXLqkHzc+6PNJ4I1FE9RNh8It+ahTz3IfVpUNF/EqoNZXWLQC9GMX3fQ2TUFobcfKT0QvCMsKqhkduIAWglWcutUIFJid303gqj77N0TGeC8aCkkWP52wIeEmz2b3egX7XJdBgDwF4N8OUP0vmM+x6dn5STsvoZWi5E0pPU689KAoKLdAWCNCLiFVr66/rQLDtAJGEJkMq0iN4Ijw7hvzx3aXCWzCyQZjxLVHWU3P85BsSJVLDRkK102YKVo5bANhukyn5YZ0Fmk/ZwEM/H8Z09HTF4OzMfRfg7VuF+MUPExUxm6mXRE0+avTfpIx9y3AzHxLZXAJ2Bksz6E2LyMF9/VG2HLXnW7jVAv2sm2VDGp1bH/T15ME6nnnTdAo0335XfJZAGzRg8PfMMdFm6D/UvyUrITEYp72+xV1/nBznjgC26Mii0FJLXNo9cE3AvqUKIYFvlUPm25vvODV8fYlywU3iP7KKpS7t/9MFctM8/ZeYGRAYix7/xO2bIphoVlISZEIPKWmOI128IhlT0l+dJOWQlb8ELX/xp5Pah8W2M+8BqoeTTlSwHcc6JDGqbcqLNrT1ySWjS2XjAUNhiOzqElyFJusVhjz3aU4sAyThq8YbRzc6Epsb677/YvOCNi4r5mIDiFpIznl7aw4FUHVGPRglZB+wROSaGjIDJgPQD/SbHMFOzoAOw1xCiDma1iwxumVeoyN3M3BnjJD25tWMRgM5lqpWubU43g1aSqc97oe11R1dczdl0bhpONXXrTvkU9D/3Hq2SlkuNvR/xDNEw4RDaTh2tnQX8x78TzrPl+3KSb/vhGvKaATcsfkcWJXAxVzUFyC4FyvwvgK8d1eyqYHon6oLrdvxxIDw1ApG5qvMfviumQBs60Em6fhPNY4tRirC8a2b1vvmSX3LjTb6pmWO49pAZB0OzcGbda/VH2dXhhlrB0IIx0fQecpOnEm48If3EbANTKwBFBw6Kk8ifduiYF8B6WUWqxAZc8dhx+XdnNJuGxxwZPItVZv6oJSVFmXa3jpqE7mZRkxRp2uIHphQBViLLBJrNcQ7YhYAFfC/VogTUyuFTXaZPJCoepfm407dLVYJzpGK/QyuqJoSL4vpzPU0StNeGrSMY1+tSdAEr97Wa3lQf+KuJZoJ9a4VbczGOMczdsy18ZfSTaoi46ek8CABvamhnnI9Hg2+aH4h/oJmJyq2erpR03Xo3ArILQg8Qjpbzp6UffLSwJhihiQYFjWL55DQrRsT1T3r4Rue+vZVVBdgT4l/2E7kEA1cJizvjCgxX7lXCigi571N9DO/OcMIyI9TnJTSh7DQus4+swq1+wY8kBnASeATN/9V2HdaG/0h9DQ8ypl03W3O4z7tO6EB54+9zMrnOWuVyp/J3oVtct3lLvLuPrk0pdje85R6cRpVKU1XUdVNaZRATgyisrS/VWjJiQ+73lyzLj9MYNoGX6MNyacWtXGF3unztPnIbSmWWD0npQg==","keys":["U2FsdGVkX18X8FTlE49lfqJt8TdHCoVvBow9EmMFWzEGLT3w4fID6/OITwX+2I9A"],"maxTries":3,"postId":"about/index.html","remember":"session","rememberDays":1}</script>
-<div id="decryptedContent" style="display:none"></div>
+<script data-pjax src="/lib/hbe.a3b9f59caa.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
 	</div>
 
 	<div class="page-template-comments">
