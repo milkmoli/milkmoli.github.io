@@ -33,8 +33,19 @@
     scripts.forEach(function (old) {
       if (!old.parentNode) return;
       if (old.getAttribute('data-executed') === '1') return;
+
+      // 只处理真正的 JS。像 <script type="hbeData">、application/json 这类是「数据块」，
+      // 重新插入会丢掉 type/id，等于把数据毁掉（加密文章的密文就存在这里）。
+      var type = (old.getAttribute('type') || '').toLowerCase();
+      var isJs = !type || type === 'text/javascript' || type === 'module' || type === 'application/javascript';
+      if (!isJs) return;
+
       old.setAttribute('data-executed', '1');
       var s = document.createElement('script');
+      // 保留原属性（id、data-* 等），避免脚本依赖它们时失效
+      for (var a = 0; a < old.attributes.length; a++) {
+        s.setAttribute(old.attributes[a].name, old.attributes[a].value);
+      }
       if (old.src) s.src = old.src;
       else s.textContent = old.textContent;
       try { old.parentNode.replaceChild(s, old); ran++; } catch (e) {}
