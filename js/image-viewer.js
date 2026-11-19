@@ -7,21 +7,13 @@
   window.__blogLightbox = true;
 
   function srcOf(img) {
-    // 懒加载时 src 是占位图，真实地址在 data-src / data-original
-    return (
-      img.getAttribute('data-src') ||
-      img.getAttribute('data-original') ||
-      img.currentSrc ||
-      img.getAttribute('src') ||
-      ''
-    ).trim();
+    return (img.currentSrc || img.getAttribute('src') || '').trim();
   }
 
   function isUsable(img) {
     var src = srcOf(img);
     if (!src) return false;
     if (src === '/' || src === location.origin + '/') return false;
-    if (/\/images\/loading\.svg$/.test(src)) return false;
     if (/^data:/i.test(src) && !/^data:image\/(png|jpe?g|webp|gif)/i.test(src)) return false;
     if (img.naturalWidth && img.naturalWidth < 150) return false;
     if (img.clientWidth && img.clientWidth < 120) return false;
