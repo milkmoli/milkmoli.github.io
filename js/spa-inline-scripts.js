@@ -55,40 +55,6 @@
 
   window.__runInlineScripts = runInlineScripts;
 
-  /* 图表脚本（hexo-graph 等注入在 body 末尾的脚本）不在内容区里，
-     切页后需要单独补跑：只在目标容器存在且还没渲染时执行。 */
-  var chartScripts = [];
-  function collectChartScripts() {
-    chartScripts = [].slice.call(document.querySelectorAll('body script:not([src])'))
-      .filter(function (s) { return (s.textContent || '').indexOf('echarts.init') >= 0; })
-      .map(function (s) { return s.textContent; });
-  }
-  function chartTargets(code) {
-    var ids = [];
-    var re = /getElementById\(['"]([^'"]+)['"]\)/g;
-    var m;
-    while ((m = re.exec(code))) ids.push(m[1]);
-    return ids;
-  }
-  function runChartScripts() {
-    if (!chartScripts.length) return 0;
-    var ran = 0;
-    chartScripts.forEach(function (code) {
-      var ids = chartTargets(code);
-      var needs = ids.some(function (id) {
-        var dom = document.getElementById(id);
-        return dom && !dom.querySelector('canvas') && !dom.getAttribute('_echarts_instance_');
-      });
-      if (!needs) return;
-      var s = document.createElement('script');
-      s.textContent = code;
-      document.body.appendChild(s);
-      ran++;
-    });
-    return ran;
-  }
-  window.__runChartScripts = runChartScripts;
-
   /* 有些页面依赖「整页加载」才能正常工作（比如注入 echarts 的统计页），
      给指向它们的链接加上 data-no-swup，让 swup 放行、走普通跳转。 */
   var FULL_LOAD_PATHS = ['/stats', '/stats/'];
@@ -107,19 +73,18 @@
     [].slice.call(contentRoot().querySelectorAll('script')).forEach(function (s) {
       s.setAttribute('data-executed', '1');
     });
-    collectChartScripts();
     markFullLoadLinks();
     var events = ['swup:page:view', 'swup:content:replace', 'swup:visit:end', 'swup:page:loaded'];
     events.forEach(function (ev) {
       document.addEventListener(ev, function () {
-        setTimeout(function () { runInlineScripts(); runChartScripts(); }, 60);
+        setTimeout(function () { runInlineScripts(); }, 60);
       });
     });
     if (window.MutationObserver) {
       var timer = null;
       new MutationObserver(function () {
         if (timer) return;
-        timer = setTimeout(function () { timer = null; markFullLoadLinks(); runInlineScripts(); runChartScripts(); }, 80);
+        timer = setTimeout(function () { timer = null; markFullLoadLinks(); runInlineScripts(); }, 80);
       }).observe(contentRoot(), { childList: true, subtree: true });
     }
   }
