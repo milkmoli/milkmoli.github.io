@@ -1,8 +1,9 @@
 let didInit = false;
 
 const toggleStyle = (element, style, firstValue, secondValue) => {
-  element.style[style] =
-    element.style[style] === firstValue ? secondValue : firstValue;
+  // 内联样式为空时按 firstValue 处理，否则第一次点击没有效果（要点两次）
+  const currentValue = element.style[style] || firstValue;
+  element.style[style] = currentValue === firstValue ? secondValue : firstValue;
 };
 
 const getParentElements = () =>

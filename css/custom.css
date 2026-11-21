@@ -1,0 +1,6 @@
+/* 分类页：子分类默认展开显示 */
+.category-list-content .all-category-list-child {
+  max-height: none !important;
+  margin-top: 15px !important;
+  overflow: visible !important;
+}
